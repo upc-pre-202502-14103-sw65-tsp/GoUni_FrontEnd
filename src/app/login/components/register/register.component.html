@@ -1,0 +1,70 @@
+<div class="register-container">
+  <div class="register-box">
+    <!-- Logo -->
+    <div class="logo">
+      <img src="logoGoUni.png" alt="Logo GoUni" class="logo-img" />
+      <h1 class="logo-title">GoUni</h1>
+    </div>
+
+    <!-- Texto de bienvenida -->
+    <div class="welcome-text">
+      <h2>Bienvenido</h2>
+      <h3>Crear una cuenta</h3>
+    </div>
+
+    <!-- Formulario de registro -->
+    <form (ngSubmit)="onSubmit()" #registerForm="ngForm">
+      <!-- Campo para el username -->
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Username</mat-label>
+        <input matInput type="text" [(ngModel)]="email" name="username" placeholder="Ingresa tu usuario" required />
+      </mat-form-field>
+
+      <!-- Campo para el correo -->
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Correo</mat-label>
+        <input matInput type="email" [(ngModel)]="username" name="email" placeholder="Ingresa un correo" required />
+      </mat-form-field>
+
+      <!-- Campo para la contraseña -->
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Contraseña</mat-label>
+        <input matInput [type]="showPassword ? 'text' : 'password'" [(ngModel)]="password" name="password" placeholder="Ingresa una contraseña" required />
+        <!-- Ícono de clave al final del input -->
+        <button mat-icon-button matSuffix (click)="togglePasswordVisibility()">
+          <mat-icon>{{ showPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+        </button>
+      </mat-form-field>
+
+      <!-- Aceptar términos y condiciones -->
+      <mat-checkbox [(ngModel)]="termsAccepted" name="terms" required>
+        Acepto los Términos y Condiciones
+      </mat-checkbox>
+
+      <!-- Botón para enviar -->
+      <button mat-raised-button color="accent" type="submit" [disabled]="!registerForm.form.valid">
+        Registrar
+      </button>
+
+      <button mat-raised-button color="accent" type="submit">
+        <a href="#" class="btn-link" (click)="navigateToLogin()">Iniciar sesión</a>
+      </button>
+    </form>
+
+    <!-- Registrarse con redes sociales -->
+<!--    <div class="or-register-with">-->
+<!--      <p>O regístrese con</p>-->
+<!--      <div class="social-icons">-->
+<!--        <button mat-icon-button aria-label="Registrarse con Google">-->
+<!--          <mat-icon svgIcon="google"></mat-icon>-->
+<!--        </button>-->
+<!--        <button mat-icon-button aria-label="Registrarse con Facebook">-->
+<!--          <mat-icon svgIcon="facebook"></mat-icon>-->
+<!--        </button>-->
+<!--        <button mat-icon-button aria-label="Registrarse con Apple">-->
+<!--          <mat-icon svgIcon="apple"></mat-icon>-->
+<!--        </button>-->
+<!--      </div>-->
+<!--    </div>-->
+  </div>
+</div>

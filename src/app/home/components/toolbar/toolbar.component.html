@@ -1,0 +1,35 @@
+<mat-toolbar color="primary">
+  <!-- Botón de menú para dispositivos móviles -->
+
+  <!-- Espaciador para empujar los elementos a la derecha -->
+  <div class="mat-spacer"></div>
+  <!-- Menú vertical oscuro para dispositivos móviles -->
+  <button mat-button [routerLink]="'/home'" class="nav-link">
+    <mat-icon>home</mat-icon> Home
+  </button>
+    <button mat-button [routerLink]="'/services'" class="nav-link">
+      <mat-icon>directions_car</mat-icon> Servicio
+    </button>
+    <button mat-button [routerLink]="'/plans'" class="nav-link">
+      <mat-icon>card_membership</mat-icon> Planes
+    </button>
+    <button mat-button [routerLink]="'/ticketbooking'" class="nav-link">
+      <mat-icon>map</mat-icon> Mapa
+    </button>
+    <button mat-button [routerLink]="'/list'" class="nav-link">
+      <mat-icon>person</mat-icon> Reserva
+    </button>
+  <!-- Espaciador para mantener los íconos a la derecha -->
+  <div class="mat-spacer"></div>
+
+  <!-- Íconos adicionales (búsqueda, notificaciones, perfil) a la derecha -->
+  <button mat-icon-button>
+    <mat-icon>search</mat-icon>
+  </button>
+  <button mat-icon-button>
+    <mat-icon>notifications</mat-icon>
+  </button>
+  <button mat-icon-button (click)="logout()">
+    <img src="avatar.png" alt="Avatar" class="user-avatar">
+  </button>
+</mat-toolbar>

@@ -1,0 +1,68 @@
+.how-it-works {
+  background-color: #FFFFFF;
+  padding: 2rem;
+  text-align: center;
+  margin-top: -5rem;
+}
+
+.how-it-works h2 {
+  margin-top: 4rem;
+  font-size: 50px;
+  text-align: left;
+  color: #333;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.how-it-works h2 span {
+  font-weight: bold;
+  font-size: 36px;
+}
+
+.steps-container {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-top: 4rem;
+}
+
+.step {
+  max-width: 300px;
+  padding: 1rem;
+}
+
+.step-icon {
+  font-size: 60px;
+  color: #4CAF50;
+  margin-bottom: 1rem;
+}
+
+.step h3 {
+  font-size: 30px;
+  letter-spacing: -1.5%;
+  text-align: center;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.step p {
+  font-size: 18px;
+  color: #666;
+}
+
+@media (max-width: 768px) {
+  .how-it-works h2 {
+    font-size: 24px;
+  }
+
+  .steps-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .step {
+    width: 100%;
+    margin-bottom: 2rem;
+  }
+}

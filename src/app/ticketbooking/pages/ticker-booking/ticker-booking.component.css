@@ -1,0 +1,126 @@
+.ticket-booking-container {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+}
+
+.map-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .search-bar {
+    width: 90%; /* Ancho de la barra de búsqueda */
+    margin-bottom: 15px; /* Espacio entre el buscador y el mapa */
+  }
+
+  .map-image {
+    width: 90%;
+    height: 380px; /* Altura del mapa para que coincida con el diseño de Figma */
+    background-color: #f2f2f2; /* Color de fondo gris claro */
+    border-radius: 15px; /* Bordes redondeados para el mapa */
+    position: relative;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra alrededor del mapa */
+  }
+
+  .map-marker {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 40px;
+    color: #ff5722; /* Color de marcador anaranjado */
+  }
+}
+
+.info-section {
+  flex: 1;
+  padding: 0 20px;
+
+  .distance {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+
+    span {
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    .distance-value {
+      font-size: 24px;
+      background-color: #e0f7fa; /* Fondo azul claro */
+      padding: 8px;
+      border-radius: 8px;
+    }
+  }
+
+  .driver-info {
+    margin-bottom: 20px;
+
+    .driver-card {
+      display: flex;
+      align-items: center;
+
+      .car-info {
+        display: flex;
+        flex-direction: column;
+
+        mat-icon {
+          margin-right: 10px;
+        }
+
+        .car-model {
+          font-weight: bold;
+          font-size: 18px;
+        }
+
+        .car-plate {
+          font-size: 14px;
+          color: #888;
+        }
+
+        .driver-name {
+          margin-top: 5px;
+        }
+
+        .driver-rating {
+          display: flex;
+          align-items: center;
+          margin-top: 5px;
+
+          mat-icon {
+            color: #FFD700;
+            margin-right: 4px;
+          }
+
+          span {
+            font-size: 14px;
+            font-weight: bold;
+          }
+        }
+      }
+    }
+  }
+
+  .booking-options {
+    margin-bottom: 20px;
+
+    .options {
+      display: flex;
+      gap: 10px;
+    }
+  }
+
+  .request-button {
+    display: flex;
+    justify-content: center;
+
+    button {
+      width: 100%;
+      max-width: 300px;
+    }
+  }
+}

@@ -1,0 +1,21 @@
+.driver-info-card {
+  padding: 20px;
+  margin-top: 10px;
+  background-color: #fff;
+  border-radius: 10px;
+}
+
+.info-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+mat-icon {
+  margin-right: 10px;
+  color: #f59e42;
+}
+
+p {
+  margin: 0;
+}

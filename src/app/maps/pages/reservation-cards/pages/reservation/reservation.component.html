@@ -1,0 +1,31 @@
+<app-toolbar></app-toolbar>
+
+<div class="reservations-container">
+  <h2>Tus reservas</h2>
+
+  <div class="reservation-tabs">
+    <button mat-raised-button color="primary">Próxima</button>
+    <button mat-raised-button>Completado</button>
+    <button mat-raised-button>Cancelado</button>
+  </div>
+
+  <div *ngFor="let reserva of reservas" class="reserva-card">
+    <img [src]="reserva.driver.photo" alt="{{ reserva.driver.name }}" class="driver-photo">
+    <div class="reservation-info">
+      <h3>{{ reserva.usuario }}</h3>
+      <p>{{ reserva.ubicacion }}</p>
+      <p><strong>{{ reserva.hora }}</strong></p>
+      <p>{{ reserva.estado }}</p>
+      <p><mat-icon>event</mat-icon> {{ reserva.fecha | date:'dd/MM/yyyy' }}</p>
+    </div>
+
+    <div class="reservation-actions">
+      <button mat-button color="accent" [routerLink]="['/reschedule', reserva.id]">Reprogramar</button>
+      <button mat-raised-button color="primary" [routerLink]="['/chat', reserva.usuarioId]">Chat</button>
+      <button mat-raised-button color="warn" (click)="deleteReservation(reserva.id)">Eliminar</button>
+
+    </div>
+  </div>
+
+  <button mat-raised-button color="warn" class="back-button" (click)="goBack()">Volver</button>
+</div>

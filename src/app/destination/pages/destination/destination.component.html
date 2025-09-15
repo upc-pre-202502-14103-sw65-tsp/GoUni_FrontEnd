@@ -1,0 +1,25 @@
+<app-toolbar></app-toolbar>
+
+<div class="destination-container">
+  <h2>¿A dónde quieres ir?</h2>
+
+  <!-- Campo de búsqueda -->
+  <input type="text" placeholder="Search for a university..." [(ngModel)]="searchTerm" (input)="filterDestinations()" />
+
+  <div class="destination-list">
+    <div *ngFor="let destination of filteredDestinations" class="destination-card" (click)="selectDestination(destination)">
+      <img [src]="destination.imageUrl" alt="{{ destination.name }}" class="destination-image" (click)="goToBooking(destination.id)" />
+      <div class="destination-info">
+        <h3>{{ destination.name }}</h3>
+        <p>{{ destination.location }}</p>
+        <p>Next available: {{ destination.nextAvailableTime }}</p>
+        <p>Rating: {{ destination.rating }} ⭐</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="pagination-buttons">
+    <button class="pagination-btn" (click)="previousPage()" [disabled]="currentPage === 0">Anterior</button>
+    <button class="pagination-btn" (click)="nextPage()" [disabled]="(currentPage + 1) * visibleDestinations >= destinations.length">Siguiente</button>
+  </div>
+</div>

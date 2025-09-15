@@ -1,0 +1,166 @@
+/* Estilos generales para pantallas grandes */
+.container {
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-start;
+  gap: 20px;
+  padding: 20px;
+  flex-wrap: wrap; /* Permite que las columnas se envuelvan en pantallas más pequeñas */
+}
+
+/* Estilos para la caja con bordes redondeados */
+.info-box {
+  background-color: cornflowerblue;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  max-width: 400px;
+  color: white;
+
+}
+
+.column {
+  flex: 1;
+  text-align: center;
+  margin: 10px;
+
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: bold;
+
+}
+
+.imglogo {
+  width: 150px;
+  margin-top: 20px;
+}
+
+.car-image {
+  width: auto ;
+  margin-top: auto;
+}
+
+.universidades {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.floating-image {
+  width: 50px;
+  margin: 5px;
+}
+
+.most-visited {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 20px 0;
+}
+
+.destination-image {
+  width: 200px;
+  border-radius: 10px;
+}
+
+.custom-button {
+  background-color: #00C389;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.custom-button.bold {
+  font-weight: bold;
+  margin-top: 2rem;
+}
+
+.estrella {
+  color: gold;
+}
+
+/* Estilos responsivos para tablets como iPads (pantallas entre 768px y 1024px) */
+@media (max-width: 1024px) {
+  .container {
+    flex-direction: column; /* Cambia a diseño en columna para tablets */
+    align-items: center;
+  }
+
+  .info-box, .car-image, .destination-image {
+    max-width: 90%; /* Ajusta el ancho máximo para ocupar más espacio en pantallas medianas */
+  }
+
+  .imglogo {
+    width: 120px;
+  }
+
+  .car-image {
+    width: 250px;
+  }
+
+  .floating-image {
+    width: 45px;
+  }
+
+  .custom-button {
+    padding: 8px 16px;
+  }
+}
+
+/* Estilos para dispositivos móviles pequeños (iPhone 12 y similares) */
+@media (max-width: 480px) {
+  .container {
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+  }
+
+  .info-box, .car-image, .destination-image {
+    width: 100%; /* Ocupa el 100% del ancho del contenedor */
+    max-width: auto; /* Limita el ancho máximo */
+  }
+
+  .title {
+    font-size: 1.5rem; /* Reduce el tamaño del título */
+  }
+
+  .imglogo {
+    width: 80px; /* Reduce el tamaño del logo */
+  }
+
+  .car-image {
+    width: 180px; /* Ajusta el tamaño de la imagen del coche */
+  }
+
+  .floating-image {
+    width: 35px; /* Reduce el tamaño de las imágenes flotantes */
+  }
+
+  .custom-button {
+    padding: 6px 12px;
+    font-size: 12px; /* Ajusta el tamaño del texto del botón */
+  }
+
+  .most-visited {
+    margin: 10px 0; /* Reduce el margen para las secciones de destinos */
+  }
+
+  .destination-image {
+    width: 150px; /* Ajusta el tamaño de las imágenes de destinos */
+  }
+
+  /* Ajustes adicionales para espaciado */
+  .column {
+    margin: 5px 0; /* Reduce el margen entre las columnas */
+  }
+
+  .info-box {
+    padding: 15px; /* Reduce el padding interno para ahorrar espacio */
+  }
+}

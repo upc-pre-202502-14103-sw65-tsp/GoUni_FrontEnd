@@ -1,0 +1,36 @@
+/* Configuración principal */
+.travel-booking {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Dos columnas, una para cada panel */
+  gap: 20px; /* Espacio entre columnas */
+  padding: 20px;
+}
+
+.left-panel {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.right-panel {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 20px; /* Espacio entre componentes */
+}
+
+/* Ajustes para pantallas más pequeñas */
+@media (max-width: 768px) {
+  .travel-booking {
+    grid-template-columns: 1fr; /* Cambia a una sola columna en pantallas pequeñas */
+  }
+}
+
+/* Ajustes para los componentes individuales */
+.mat-card {
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
+  padding: 20px;
+  background-color: #f9f9f9;
+}
+

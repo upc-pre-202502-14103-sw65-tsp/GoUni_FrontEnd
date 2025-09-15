@@ -1,0 +1,25 @@
+
+<div id="map" #map></div>
+
+<div class="floating-range p-2">
+  <div class="floating-content">
+    <button (click)="zoomOut()" class="btn btn-primary"> - </button>
+
+    <input type="range"
+           class="form-range px-2"
+           min="-2"
+           max="18"
+           [value]="zoom"
+            (input)="zoomChanged( zoomInput.value )"
+           #zoomInput
+    >
+
+    <button (click)="zoomIn()" class="btn btn-primary"> + </button>
+  </div>
+
+  <span class="form-label">
+    Zoom: {{ zoom | number: '1.1-1' }}
+    <br>
+    Lng, Lat: {{currentLngLat.lng | number: '2.4-4'}}, {{currentLngLat.lat | number: '2.4-4'}}
+  </span>
+</div>

@@ -1,0 +1,10 @@
+
+li{
+  cursor: pointer;
+  transition: 0.2s all;
+}
+
+.list-group-item.active {
+  background-color: #007bff; /* Color azul */
+  color: white; /* Color del texto cuando está activo */
+}

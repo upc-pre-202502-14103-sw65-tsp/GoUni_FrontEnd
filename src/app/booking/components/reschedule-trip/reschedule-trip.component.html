@@ -1,0 +1,33 @@
+<app-toolbar></app-toolbar>
+
+<mat-card class="reschedule-card">
+  <h2>Reschedule Trip for {{ reserva?.usuario }}</h2>
+
+  <mat-divider></mat-divider>
+
+  <!-- Select New Date -->
+  <div class="date-time-selector">
+    <h3>Select New Date</h3>
+    <mat-button-toggle-group [(ngModel)]="selectedDate">
+      <mat-button-toggle *ngFor="let day of days" [value]="day.date">
+        {{ day.date }} {{ day.dayName }}
+      </mat-button-toggle>
+    </mat-button-toggle-group>
+  </div>
+
+  <!-- Select New Time -->
+  <div class="date-time-selector">
+    <h3>Select New Time</h3>
+    <mat-button-toggle-group [(ngModel)]="selectedTime">
+      <mat-button-toggle *ngFor="let time of ['8:00', '10:30', '13:00', '15:00', '16:30']" [value]="time">
+        {{ time }}
+      </mat-button-toggle>
+    </mat-button-toggle-group>
+  </div>
+
+  <!-- Confirm Button -->
+  <button mat-raised-button color="primary" (click)="confirmReschedule()">Confirmar reprogramación</button>
+
+  <!-- Go Back Button -->
+  <button mat-raised-button color="warn" (click)="goBack()">Go Back</button>
+</mat-card>

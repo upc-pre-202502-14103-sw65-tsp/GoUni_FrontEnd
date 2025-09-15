@@ -1,0 +1,9 @@
+<div *ngFor="let destination of destinations" class="destination-card" (click)="selectDestination(destination)">
+  <img [src]="destination.imageUrl" alt="{{ destination.name }}" class="destination-image" />
+  <div class="destination-info">
+    <h3>{{ destination.name }}</h3>
+    <p>{{ destination.location }}</p>
+    <p>Next available: {{ destination.nextAvailableTime }}</p>
+    <p>Rating: {{ destination.rating }} ⭐</p>
+  </div>
+</div>

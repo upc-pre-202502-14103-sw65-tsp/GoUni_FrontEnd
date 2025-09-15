@@ -1,0 +1,20 @@
+<app-toolbar></app-toolbar>
+<section class="plans" id="planes">
+  <h2 class="our-plans">Nuestros Planes</h2>
+  <div class="plan-cards">
+    <mat-card class="plan-card" *ngFor="let plan of plans" [ngClass]="{'featured': plan.popular}">
+      <h3>{{plan.name}}</h3>
+      <p class="price">{{plan.displayPrice}} <span *ngIf="plan.period">{{plan.period}}</span></p>
+      <div class="popular" *ngIf="plan.popular">Más popular</div>
+      <ul>
+        <li *ngFor="let feature of plan.features">{{feature}}</li>
+      </ul>
+      <button mat-raised-button color="primary" (click)="subscribe(plan)">Suscríbete</button>
+      <p class="cancel">Cancela en cualquier momento</p>
+    </mat-card>
+  </div>
+
+  <div *ngIf="subscriptionStatus" class="subscription-status">
+    {{ subscriptionStatus }}
+  </div>
+</section>

@@ -1,0 +1,17 @@
+<mat-card class="date-time-card">
+  <h3>Elige Fecha</h3>
+  <div class="date-options">
+    <button mat-button *ngFor="let day of days" [class.selected]="selectedDate === day" (click)="selectDate(day)">
+      {{ day }}
+    </button>
+  </div>
+
+  <h3>Elige Hora</h3>
+  <div class="time-options">
+    <button mat-button *ngFor="let time of times" [class.selected]="selectedTime === time" (click)="selectTime(time)">
+      {{ time }}
+    </button>
+  </div>
+</mat-card>
+
+
