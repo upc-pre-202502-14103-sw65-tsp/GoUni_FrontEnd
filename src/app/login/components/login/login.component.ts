@@ -7,6 +7,7 @@ import {Router} from "@angular/router";
 import {MatButtonModule} from "@angular/material/button";
 import { MatInputModule} from "@angular/material/input";
 import {MatIcon} from "@angular/material/icon";
+import toast, {Toaster} from "solid-toast";
 
 @Component({
   selector: 'app-login',
@@ -31,18 +32,26 @@ export class LoginComponent {
   constructor(private authService: AuthService, private router: Router) {}
 
   onSubmit() {
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.edu\.pe$/;
+
+    if (!emailRegex.test(this.username)) {
+      toast.error('Solo se permiten correos institucionales (.edu.pe).');
+      return;
+    }
+
     if (this.username && this.password) {
       this.authService.login(this.username, this.password).subscribe(
         (isAuthenticated) => {
           if (isAuthenticated) {
+            toast.success('Bienvenido/a!');
             this.router.navigate(['/home']);
           } else {
-            alert('Credenciales incorrectas. Inténtalo de nuevo.');
+            toast.error('Credenciales incorrectas. Inténtalo de nuevo.');
           }
         },
         (error) => {
           console.error('Error en la autenticación:', error);
-          alert('Error en el servidor. Inténtalo de nuevo más tarde.');
+          toast.error('Error en el servidor. Inténtalo de nuevo más tarde.');
         }
       );
     }

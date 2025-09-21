@@ -9,6 +9,7 @@ import {MatIcon, MatIconModule} from "@angular/material/icon";
 import {MatCheckbox, MatCheckboxModule} from "@angular/material/checkbox";
 import {HttpClient} from "@angular/common/http";
 import {NgOptimizedImage} from "@angular/common";
+import toast, {Toaster} from "solid-toast";
 
 @Component({
   selector: 'app-register',
@@ -36,7 +37,14 @@ export class RegisterComponent {
 
   onSubmit() {
     if (!this.termsAccepted) {
-      alert('Debes aceptar los Términos y Condiciones para continuar.');
+      toast.error('Debes aceptar los Términos y Condiciones para continuar.');
+      return;
+    }
+
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.edu\.pe$/;
+
+    if (!emailRegex.test(this.email)) {
+      toast.error('Solo se permiten correos institucionales (.edu.pe).');
       return;
     }
 
@@ -46,12 +54,12 @@ export class RegisterComponent {
 
     this.authService.register(username, password, role).subscribe({
       next: (response) => {
-        alert('Registro exitoso. Ahora puedes iniciar sesión.');
+        toast.success('Registro exitoso. Ahora puedes iniciar sesión.');
         this.router.navigate(['/login']);
       },
       error: (error) => {
         console.error('Error al registrar usuario:', error);
-        alert('No se pudo registrar el usuario. Por favor, intenta nuevamente.');
+        toast.error('No se pudo registrar el usuario. Por favor, intenta nuevamente.');
       }
     });
   }
