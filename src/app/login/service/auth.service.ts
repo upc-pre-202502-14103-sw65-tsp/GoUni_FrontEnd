@@ -3,12 +3,13 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
+import { environment } from '../../../../enviroment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'https://gouniprojectdeploy-production.up.railway.app/api/v1/authentication';
+  private apiUrl = `${environment.backendUrl}/api/v1/authentication`;
 
   constructor(private http: HttpClient) {}
 
