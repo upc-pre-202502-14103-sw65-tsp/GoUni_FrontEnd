@@ -4,7 +4,7 @@ import { Stomp } from '@stomp/stompjs';
 import { BehaviorSubject } from 'rxjs';
 import { ChatMessage } from "../models/chat-message";
 import SockJS from "sockjs-client";
-import { environment } from '../../../../enviroment';
+import { environment } from '../../../environments/environments';
 
 @Injectable({
   providedIn: 'root'

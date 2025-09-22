@@ -56,8 +56,6 @@ export const routes: Routes = [
   { path: 'chat/:userId',
     component: ChatComponent,
     canActivate: [AuthGuard],},
-
-
   {
     path: 'booking',
     loadChildren: () => import('./booking/booking.module').then(m => m.BookingModule),
@@ -68,10 +66,17 @@ export const routes: Routes = [
     loadChildren: () => import('./maps/pages/reservation-cards/reservation-cards.module').then(m => m.ReservationCardsModule),
     canActivate: [AuthGuard],
   },
-  { path: 'reschedule/:id', component: RescheduleTripComponent },
+  {
+    path: 'reschedule/:id',
+    component: RescheduleTripComponent
+  },
   {
     path: '**',
     component: PageNotFoundComponent,
+  },
+  {
+    path: 'payments',
+    loadChildren: () => import('./payments/payments.module').then(m => m.PaymentsModule)
   },
 ];
 
