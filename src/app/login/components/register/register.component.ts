@@ -18,7 +18,6 @@ import { MessageService } from 'primeng/api';
   standalone: true,
   imports: [
     FormsModule,
-    NgOptimizedImage,
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
@@ -31,8 +30,11 @@ import { MessageService } from 'primeng/api';
   providers: [MessageService],
 })
 export class RegisterComponent {
-  username = '';
   email = '';
+  firstName = '';
+  lastName = '';
+  phoneNumber = '';
+  dniNumber = '';
   password = '';
   showPassword = false;
   termsAccepted = false;
@@ -53,22 +55,15 @@ export class RegisterComponent {
       return;
     }
 
-    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.edu\.pe$/;
-
-    if (!emailRegex.test(this.email)) {
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Error',
-        detail: 'Solo se permiten correos institucionales (.edu.pe).',
-      });
-      return;
-    }
-
-    const username = this.username;
+    const email = this.email;
+    const firstName = this.firstName;
+    const lastName = this.lastName;
+    const phoneNumber = this.phoneNumber;
+    const dniNumber = this.dniNumber;
     const password = this.password;
-    const role = 'USER';
+    const role = 'PASSENGER_ROLE';
 
-    this.authService.register(username, password, role).subscribe({
+    this.authService.register(email, firstName, lastName, phoneNumber, dniNumber, password, role).subscribe({
       next: () => {
         this.messageService.add({
           severity: 'success',

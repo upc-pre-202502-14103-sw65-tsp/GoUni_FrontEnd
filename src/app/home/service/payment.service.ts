@@ -17,7 +17,7 @@ export interface PaymentRequest {
   providedIn: 'root'
 })
 export class PaymentService {
-  private apiUrl = 'https://gouniprojectdeploy-production.up.railway.app/api/v1/payments';
+  private apiUrl = 'https://gouni-platform-deploy.ey.r.appspot.com/api/v1/payments';
 
   constructor(
     private http: HttpClient,
