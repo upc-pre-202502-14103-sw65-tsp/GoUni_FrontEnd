@@ -1,4 +1,5 @@
-import {RouterModule, Routes} from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
+import { NgModule } from '@angular/core';
 import { DestinationComponent } from "./destination/pages/destination/destination.component";
 import { AuthGuard } from "./login/auth.guard";
 import { PageNotFoundComponent } from "./home/pages/page-not-found/page-not-found.component";
@@ -7,8 +8,8 @@ import { ServicesComponent } from "./home/pages/services/services.component";
 import { TickerBookingComponent } from "./ticketbooking/pages/ticker-booking/ticker-booking.component";
 import { RegisterComponent } from "./login/components/register/register.component";
 import { RescheduleTripComponent } from "./booking/components/reschedule-trip/reschedule-trip.component";
-import {ChatComponent} from "./chat/components/chat/chat.component";
-import {NgModule} from "@angular/core";
+import { ChatComponent } from "./chat/components/chat/chat.component";
+import { PaymentViewComponent } from './payments/views/payment-view.component';
 
 export const routes: Routes = [
   {
@@ -29,12 +30,13 @@ export const routes: Routes = [
     loadChildren: () => import('./home/home.module').then(m => m.HomeModule),
     canActivate: [AuthGuard],
   },
-  { path: 'plans',
+  { 
+    path: 'plans',
     component: PlansComponent,
     canActivate: [AuthGuard]
   },
-
-  { path: 'services',
+  { 
+    path: 'services',
     component: ServicesComponent,
     canActivate: [AuthGuard]
   },
@@ -53,9 +55,11 @@ export const routes: Routes = [
     component: DestinationComponent,
     canActivate: [AuthGuard],
   },
-  { path: 'chat/:userId',
+  { 
+    path: 'chat/:userId',
     component: ChatComponent,
-    canActivate: [AuthGuard],},
+    canActivate: [AuthGuard],
+  },
   {
     path: 'booking',
     loadChildren: () => import('./booking/booking.module').then(m => m.BookingModule),
@@ -67,20 +71,16 @@ export const routes: Routes = [
     canActivate: [AuthGuard],
   },
   {
+    path: 'payments/:plan',
+    component: PaymentViewComponent,
+    canActivate: [AuthGuard]
+  },
+  {
     path: 'reschedule/:id',
     component: RescheduleTripComponent
   },
   {
     path: '**',
     component: PageNotFoundComponent,
-  },
-  {
-    path: 'payments',
-    loadChildren: () => import('./payments/payments.module').then(m => m.PaymentsModule)
-  },
+  }
 ];
-
-
-
-
-

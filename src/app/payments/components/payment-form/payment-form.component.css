@@ -77,3 +77,28 @@ label {
   color: #155724;
   border-radius: 4px;
 }
+
+.payment-container {
+  max-width: 500px;
+  margin: 2rem auto;
+  padding: 2rem;
+}
+
+.plan-info {
+  background-color: #e8f5e8;
+  padding: 0.5rem;
+  border-radius: 4px;
+  text-align: center;
+}
+
+.disabled {
+  background-color: #f5f5f5;
+  color: #666;
+}
+
+.text-muted {
+  color: #666;
+  font-size: 0.875rem;
+  display: block;
+  margin-top: 0.25rem;
+}

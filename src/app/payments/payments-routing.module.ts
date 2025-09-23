@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { PaymentFormComponent } from './components/payment-form/payment-form.component';
+import { PaymentViewComponent } from './views/payment-view.component';
 
 const routes: Routes = [
-  { path: '', component: PaymentFormComponent }
+  { path: ':plan', component: PaymentViewComponent }
 ];
 
 @NgModule({
