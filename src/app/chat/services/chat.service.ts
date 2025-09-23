@@ -13,6 +13,7 @@ export class ChatService {
 
   private stompClient: any;
   private messageSubject: BehaviorSubject<ChatMessage[]> = new BehaviorSubject<ChatMessage[]>([]);
+
   private apiUrl = environment.backendUrl;
 
   constructor(private httpClient: HttpClient) {

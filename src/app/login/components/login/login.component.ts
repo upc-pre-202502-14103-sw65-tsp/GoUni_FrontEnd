@@ -28,7 +28,7 @@ import { MessageService } from 'primeng/api';
   providers: [MessageService],
 })
 export class LoginComponent {
-  username: string = '';
+  email: string = '';
   password: string = '';
   showPassword: boolean = false;
 
@@ -41,7 +41,7 @@ export class LoginComponent {
   onSubmit() {
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.edu\.pe$/;
 
-    if (!emailRegex.test(this.username)) {
+    if (!emailRegex.test(this.email)) {
       this.messageService.add({
         severity: 'error',
         summary: 'Error',
@@ -50,8 +50,8 @@ export class LoginComponent {
       return;
     }
 
-    if (this.username && this.password) {
-      this.authService.login(this.username, this.password).subscribe(
+    if (this.email && this.password) {
+      this.authService.login(this.email, this.password).subscribe(
         (isAuthenticated) => {
           if (isAuthenticated) {
             this.messageService.add({

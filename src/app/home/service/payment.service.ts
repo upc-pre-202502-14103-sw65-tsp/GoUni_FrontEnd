@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import {AuthService} from "../../login/service/auth.service";
+import { environment } from '../../../environments/environments';
 
 export interface PaymentRequest {
   cardNumber: string;
@@ -17,7 +18,7 @@ export interface PaymentRequest {
   providedIn: 'root'
 })
 export class PaymentService {
-  private apiUrl = 'https://gouniprojectdeploy-production.up.railway.app/api/v1/payments';
+  private apiUrl = `${environment.backendUrl}/api/v1/payments`;
 
   constructor(
     private http: HttpClient,
