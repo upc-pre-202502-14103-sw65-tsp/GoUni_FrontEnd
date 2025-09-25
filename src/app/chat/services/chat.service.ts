@@ -4,6 +4,7 @@ import { Stomp } from '@stomp/stompjs';
 import { BehaviorSubject } from 'rxjs';
 import { ChatMessage } from "../models/chat-message";
 import SockJS from "sockjs-client";
+import { environment } from '../../../environments/environments';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,8 @@ export class ChatService {
 
   private stompClient: any;
   private messageSubject: BehaviorSubject<ChatMessage[]> = new BehaviorSubject<ChatMessage[]>([]);
-  private apiUrl = 'https://gouni-platform-deploy.ey.r.appspot.com/'; // URL base del backend
+
+  private apiUrl = environment.backendUrl;
 
   constructor(private httpClient: HttpClient) {
     this.initConnectionSocket();

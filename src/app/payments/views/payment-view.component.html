@@ -1,0 +1,31 @@
+<app-toolbar></app-toolbar>
+<div class="payment-view-container">
+  @if (plan) {
+    <div class="plan-summary">
+      <h2>Pago del plan: {{ plan.name }}</h2>
+      <p class="price">Precio: S/.{{ plan.price }} 
+        @if (plan.period) {
+          <span>{{ plan.period }}</span>
+        }
+      </p>
+      
+      <div class="features">
+        <h3>Características incluidas:</h3>
+        <ul>
+          @for (feature of plan.features; track feature) {
+            <li>{{ feature }}</li>
+          }
+        </ul>
+      </div>
+    </div>
+
+    <app-payment-form 
+      [planAmount]="plan.price" 
+      [planName]="plan.name">
+    </app-payment-form>
+  } @else {
+    <div class="loading">
+      <p>Cargando información del plan...</p>
+    </div>
+  }
+</div>
