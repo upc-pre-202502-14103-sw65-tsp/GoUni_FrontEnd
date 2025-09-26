@@ -1,0 +1,33 @@
+<app-toolbar></app-toolbar>
+
+<div class="payment-view-container">
+  @if (plan) {
+    <div class="plan-summary">
+      <h2 class="plan">Pago del plan: {{ plan.name }}</h2>
+      <p class="price">Precio: S/.{{ plan.price }} 
+        @if (plan.period) {
+          <span>{{ plan.period }}</span>
+        }
+      </p>
+      <div>
+        <h3 class="features">Características incluidas:</h3>
+        <ul>
+          @for (feature of plan.features; track feature) {
+            <li>{{ feature }}</li>
+          }
+        </ul>
+      </div>
+    </div>
+
+    <!-- FORMULARIO DE LA PASARELA DE PAGOS :V-->
+    <app-payment-form
+      [planAmount]="plan.price"
+      [planName]="plan.name">
+    </app-payment-form>
+
+  } @else {
+    <div class="loading">
+      <p>Cargando información del plan...</p>
+    </div>
+  }
+</div>

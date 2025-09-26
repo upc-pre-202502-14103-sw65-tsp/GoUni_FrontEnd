@@ -15,22 +15,40 @@
 
     <!-- Formulario de registro -->
     <form (ngSubmit)="onSubmit()" #registerForm="ngForm">
-      <!-- Campo para el username -->
-      <mat-form-field appearance="fill" class="full-width">
-        <mat-label>Username</mat-label>
-        <input matInput type="text" [(ngModel)]="email" name="username" placeholder="Ingresa tu usuario" required />
-      </mat-form-field>
-
       <!-- Campo para el correo -->
       <mat-form-field appearance="fill" class="full-width">
         <mat-label>Correo</mat-label>
-        <input matInput type="email" [(ngModel)]="username" name="email" placeholder="Ingresa un correo" required />
+        <input matInput type="email" [(ngModel)]="email" name="email" placeholder="Ingresa tu correo" autocomplete="off" required />
+      </mat-form-field>
+
+      <!-- Campo para el nombre -->
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Nombre</mat-label>
+        <input matInput type="text" [(ngModel)]="firstName" name="firstName" placeholder="Ingresa tu nombre" autocomplete="off" required />
+      </mat-form-field>
+
+      <!-- Campo para el apellido -->
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Apellido</mat-label>
+        <input matInput type="text" [(ngModel)]="lastName" name="lastName" placeholder="Ingresa tu apellido" autocomplete="off" required />
+      </mat-form-field>
+
+      <!-- Campo para el teléfono -->
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Teléfono</mat-label>
+        <input matInput type="tel" [(ngModel)]="phoneNumber" name="phoneNumber" placeholder="Ingresa tu teléfono" autocomplete="off" required />
+      </mat-form-field>
+
+      <!-- Campo para el DNI -->
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>DNI</mat-label>
+        <input matInput type="text" [(ngModel)]="dniNumber" name="dniNumber" placeholder="Ingresa tu DNI (8 dígitos)" autocomplete="off" required pattern="[0-9]{8}" maxlength="8" />
       </mat-form-field>
 
       <!-- Campo para la contraseña -->
       <mat-form-field appearance="fill" class="full-width">
         <mat-label>Contraseña</mat-label>
-        <input matInput [type]="showPassword ? 'text' : 'password'" [(ngModel)]="password" name="password" placeholder="Ingresa una contraseña" required />
+        <input matInput [type]="showPassword ? 'text' : 'password'" [(ngModel)]="password" name="password" placeholder="Ingresa una contraseña" autocomplete="off" required />
         <!-- Ícono de clave al final del input -->
         <button mat-icon-button matSuffix (click)="togglePasswordVisibility()">
           <mat-icon>{{ showPassword ? 'visibility_off' : 'visibility' }}</mat-icon>

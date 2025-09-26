@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
+import { environment } from '../../../../../environments/environments';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ReservaService {
-  private apiUrl = 'https://deploynew.onrender.com/reservas';  // URL del JSON-Server
+  private apiUrl = `${environment.backendUrl}/reservas`;
 
   constructor(private http: HttpClient) {}
 

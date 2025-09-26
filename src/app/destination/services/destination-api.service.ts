@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {ServiceDestination} from "./interfaces/destinationApi";
+import { environment } from '../../../environments/environments';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +10,7 @@ import {ServiceDestination} from "./interfaces/destinationApi";
 export class DestinationApiService {
 
   //Aqui va ir el URL del JSON-SERVER
-  private apiUrl = 'https://deploynew.onrender.com/destinations';
+  private apiUrl = `${environment.backendUrl}/destinations`;
 
   constructor(private http: HttpClient) { }
 
