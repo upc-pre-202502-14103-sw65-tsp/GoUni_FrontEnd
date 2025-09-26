@@ -1,8 +1,20 @@
-.payment-container {
+.payment-view-container {
   max-width: 500px;
   margin: 40px auto;
   padding: 24px;
   background: #fff;
   border-radius: 12px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.plan {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.features {
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: bold;
 }

@@ -120,9 +120,6 @@ export class PaymentService {
     });
   }
 
-  /**
-   * Procesar pago completo con notificaciones por email
-   */
   async processCompletePayment(
     amount: number,
     currency: string,

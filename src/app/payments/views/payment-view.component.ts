@@ -26,7 +26,7 @@ export class PaymentViewComponent implements OnInit {
   ngOnInit(): void {
     const navigation = this.router.getCurrentNavigation();
     this.plan = navigation?.extras.state?.['plan'];
-    
+
     if (!this.plan) {
       this.plan = this.getPlanFromUrl();
     }
