@@ -2,7 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { loadStripe, Stripe, StripeElements } from '@stripe/stripe-js';
 import { environment } from '../../../environments/environments';
-import { Observable, from, switchMap, BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, firstValueFrom } from 'rxjs';
 import { EmailService, PaymentNotificationData } from '../../notifications/services/email.service';
 
 @Injectable({
@@ -79,45 +79,52 @@ export class PaymentService {
     });
   }
 
-  createPaymentMethod(): Observable<string> {
-    return this.isInitialized.pipe(
-      switchMap(isInitialized => {
-        if (!isInitialized) {
-          throw new Error('Stripe Elements no está inicializado');
-        }
-        return from(this.stripePromise);
-      }),
-      switchMap(async (stripe) => {
-        if (!stripe || !this.cardElement) {
-          throw new Error('Stripe no inicializado');
-        }
+  async createPaymentMethod(): Promise<any> {
+    const stripe = await this.stripePromise;
+    if (!stripe || !this.cardElement) {
+      throw new Error('Stripe no inicializado');
+    }
 
-        const { paymentMethod, error } = await stripe.createPaymentMethod({
-          type: 'card',
-          card: this.cardElement,
-        });
+    const { paymentMethod, error } = await stripe.createPaymentMethod({
+      type: 'card',
+      card: this.cardElement,
+    });
 
-        if (error) {
-          throw error;
-        }
+    if (error) {
+      throw error;
+    }
 
-        return paymentMethod.id;
-      })
-    );
+    return paymentMethod;
   }
 
-  createPaymentIntent(amount: number, currency: string = 'usd'): Observable<any> {
-    return this.http.post(`${environment.backendUrl}/create-payment-intent`, {
-      amount,
-      currency
-    });
+  async createPaymentIntent(amount: number, currency: string = 'usd'): Promise<any> {
+    try {
+      const response = await firstValueFrom(
+        this.http.post(`${environment.backendUrl}/create-payment-intent`, {
+          amount,
+          currency
+        })
+      );
+      return response;
+    } catch (error) {
+      console.error('Error creando payment intent:', error);
+      throw error;
+    }
   }
 
-  confirmPayment(clientSecret: string, paymentMethodId: string): Observable<any> {
-    return this.http.post(`${environment.backendUrl}/confirm-payment`, {
-      clientSecret,
-      paymentMethodId
-    });
+  async confirmPayment(clientSecret: string, paymentMethodId: string): Promise<any> {
+    try {
+      const response = await firstValueFrom(
+        this.http.post(`${environment.backendUrl}/confirm-payment`, {
+          clientSecret,
+          paymentMethodId
+        })
+      );
+      return response;
+    } catch (error) {
+      console.error('Error confirmando pago:', error);
+      throw error;
+    }
   }
 
   async processCompletePayment(
@@ -133,11 +140,11 @@ export class PaymentService {
 
     try {
       console.log('🔸 [PaymentService] Creando payment method...');
-      const paymentMethodId = await this.createPaymentMethod().toPromise();
-      console.log('🔸 [PaymentService] PaymentMethod ID:', paymentMethodId);
+      const paymentMethod = await this.createPaymentMethod();
+      console.log('🔸 [PaymentService] PaymentMethod ID:', paymentMethod.id);
 
       console.log('🔸 [PaymentService] Creando payment intent...');
-      const paymentIntent: any = await this.createPaymentIntent(amount, currency).toPromise();
+      const paymentIntent: any = await this.createPaymentIntent(amount, currency);
       console.log('🔸 [PaymentService] PaymentIntent:', paymentIntent);
 
       if (!paymentIntent || !paymentIntent.clientSecret) {
@@ -148,9 +155,8 @@ export class PaymentService {
       console.log('🔸 [PaymentService] Confirmando pago...');
       const result: any = await this.confirmPayment(
         paymentIntent.clientSecret,
-        paymentMethodId || ""
-      ).toPromise();
-
+        paymentMethod.id
+      );
       console.log('🔸 [PaymentService] Resultado confirmación:', result);
 
       if (result.status === 'succeeded') {
@@ -167,8 +173,13 @@ export class PaymentService {
           transactionId: result.paymentIntentId
         };
 
-        await this.emailService.sendPaymentNotification(notificationData);
-        await this.emailService.sendWelcomeNotification(notificationData);
+        try {
+          await this.emailService.sendPaymentNotification(notificationData);
+          await this.emailService.sendWelcomeNotification(notificationData);
+        } catch (emailError) {
+          console.warn('⚠️ [PaymentService] Error enviando emails:', emailError);
+          // No fallar el pago por errores de email
+        }
 
         return { success: true, transactionId: result.paymentIntentId };
       } else {
@@ -188,8 +199,12 @@ export class PaymentService {
         errorMessage: error.message
       };
 
-      console.log('🔸 [PaymentService] Enviando email de fallo...');
-      await this.emailService.sendPaymentNotification(notificationData);
+      try {
+        console.log('🔸 [PaymentService] Enviando email de fallo...');
+        await this.emailService.sendPaymentNotification(notificationData);
+      } catch (emailError) {
+        console.warn('⚠️ [PaymentService] Error enviando email de fallo:', emailError);
+      }
 
       return { success: false, error: error.message };
     }
