@@ -2,7 +2,6 @@
 
 #Environment variables, API keys, and other secrets (only an example, not a real file)
 .env
-src/environments/environments.ts
 
 # Compiled output
 /dist

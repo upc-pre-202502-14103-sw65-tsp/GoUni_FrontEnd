@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { EmailService } from '../../../notifications/services/email.service';
 
 @Component({
   selector: 'app-payment-form',
@@ -15,6 +16,7 @@ import { RouterModule } from '@angular/router';
 })
 export class PaymentFormComponent implements OnInit, AfterViewInit, OnDestroy {
   private paymentService = inject(PaymentService);
+  private emailService = inject(EmailService);
   private fb = inject(FormBuilder);
 
   @Input() planAmount: number = 0;
@@ -31,14 +33,13 @@ export class PaymentFormComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit(): void {
-    // ✅ Inicializar Stripe después de que la vista esté renderizada
     this.initializeStripe();
   }
 
   private initializeForm(): void {
     this.paymentForm = this.fb.group({
       amount: [
-        { value: this.planAmount, disabled: this.planAmount > 0 }, 
+        { value: this.planAmount, disabled: this.planAmount > 0 },
         [Validators.required, Validators.min(1)]
       ],
       name: ['', Validators.required],
@@ -56,7 +57,10 @@ export class PaymentFormComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   async onSubmit(): Promise<void> {
+    console.log('🔸 [PaymentForm] onSubmit iniciado');
+
     if (this.paymentForm.invalid) {
+      console.log('❌ [PaymentForm] Formulario inválido');
       this.markAllFieldsAsTouched();
       return;
     }
@@ -65,38 +69,30 @@ export class PaymentFormComponent implements OnInit, AfterViewInit, OnDestroy {
     this.errorMessage = '';
 
     try {
-      const formValue = this.paymentForm.getRawValue(); // ✅ Usar getRawValue para obtener valores de campos disabled
-      const { amount, name, email } = formValue;
+      const formValue = this.paymentForm.getRawValue();
+      console.log('🔸 [PaymentForm] Datos del formulario:', formValue);
 
-      // 1. Crear método de pago
-      const paymentMethodId = await this.paymentService.createPaymentMethod().toPromise();
+      const result = await this.paymentService.processCompletePayment(
+        formValue.amount * 100,
+        'usd',
+        { name: formValue.name, email: formValue.email },
+        this.planName
+      );
 
-      // 2. Crear intento de pago en el backend
-      const paymentIntent: any = await this.paymentService.createPaymentIntent(
-        amount * 100, // Convertir a centavos
-        'usd'
-      ).toPromise();
+      console.log('🔸 [PaymentForm] Resultado del pago:', result);
 
-      if (!paymentIntent || !paymentIntent.clientSecret) {
-        throw new Error('No se pudo crear el intento de pago');
-      }
-
-      // 3. Confirmar el pago en el backend
-      const result: any = await this.paymentService.confirmPayment(
-        paymentIntent.clientSecret,
-        paymentMethodId || ""
-      ).toPromise();
-
-      if (result.status === 'succeeded') {
+      if (result.success) {
         this.paymentSuccess = true;
+        console.log('✅ [PaymentForm] Pago exitoso');
       } else {
-        throw new Error('El pago no fue exitoso');
+        throw new Error(result.error);
       }
     } catch (error: any) {
-      console.error('Error en el pago:', error);
+      console.error('❌ [PaymentForm] Error en onSubmit:', error);
       this.errorMessage = error.message || 'Ocurrió un error durante el pago';
     } finally {
       this.isLoading = false;
+      console.log('🔸 [PaymentForm] onSubmit finalizado');
     }
   }
 
