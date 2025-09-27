@@ -1,5 +1,6 @@
 export const environment = {
   stripePublicKey: 'pk_test_51S9f0NLJCy2eHAzkKSHJpY0ilhqCIReBgtdYjkm5ma8emRmDup7IXhPeV0qSfKS2SeXgDEEKbKG76VQuCDnRkBD300zIhuOjtT',
+  // CAMBIO DE URL
   backendUrl: 'https://gouni-cloudrun-sa-879620681296.southamerica-west1.run.app',
 
   mailersend: {
