@@ -15,6 +15,18 @@
 
     <!-- Formulario de registro -->
     <form (ngSubmit)="onSubmit()" #registerForm="ngForm">
+      <!-- Selección de rol -->
+      <div class="role-group">
+        <label>
+          <input type="radio" name="role" [(ngModel)]="role" value="PASSENGER_ROLE" required />
+          Pasajero
+        </label>
+        <label>
+          <input type="radio" name="role" [(ngModel)]="role" value="DRIVER_ROLE" required />
+          Conductor
+        </label>
+      </div>
+
       <!-- Campo para el correo -->
       <mat-form-field appearance="fill" class="full-width">
         <mat-label>Correo</mat-label>
@@ -54,6 +66,24 @@
           <mat-icon>{{ showPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
         </button>
       </mat-form-field>
+
+      <!-- Campo para la foto de perfil -->
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Foto de perfil (URL)</mat-label>
+        <input matInput type="text" [(ngModel)]="profilePhotoUrl" name="profilePhotoUrl" placeholder="URL de la foto" autocomplete="off" />
+      </mat-form-field>
+
+      <!-- Campos solo para conductor -->
+      <div *ngIf="role === 'DRIVER_ROLE'">
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Número de licencia</mat-label>
+          <input matInput type="text" [(ngModel)]="licenseNumber" name="licenseNumber" placeholder="Licencia" autocomplete="off" required />
+        </mat-form-field>
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Descripción del conductor</mat-label>
+          <input matInput type="text" [(ngModel)]="driverDescription" name="driverDescription" placeholder="Descripción" autocomplete="off" required />
+        </mat-form-field>
+      </div>
 
       <!-- Aceptar términos y condiciones -->
       <mat-checkbox [(ngModel)]="termsAccepted" name="terms" required>
