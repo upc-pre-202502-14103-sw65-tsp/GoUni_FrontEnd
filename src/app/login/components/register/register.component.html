@@ -17,14 +17,10 @@
     <form (ngSubmit)="onSubmit()" #registerForm="ngForm">
       <!-- Selección de rol -->
       <div class="role-group">
-        <label>
-          <input type="radio" name="role" [(ngModel)]="role" value="PASSENGER_ROLE" required />
-          Pasajero
-        </label>
-        <label>
-          <input type="radio" name="role" [(ngModel)]="role" value="DRIVER_ROLE" required />
-          Conductor
-        </label>
+        <mat-radio-group [(ngModel)]="role" name="role" required>
+          <mat-radio-button value="PASSENGER_ROLE" class="radio-option">Pasajero</mat-radio-button>
+          <mat-radio-button value="DRIVER_ROLE" class="radio-option">Conductor</mat-radio-button>
+        </mat-radio-group>
       </div>
 
       <!-- Campo para el correo -->
@@ -61,8 +57,7 @@
       <mat-form-field appearance="fill" class="full-width">
         <mat-label>Contraseña</mat-label>
         <input matInput [type]="showPassword ? 'text' : 'password'" [(ngModel)]="password" name="password" placeholder="Ingresa una contraseña" autocomplete="off" required />
-        <!-- Ícono de clave al final del input -->
-        <button mat-icon-button matSuffix (click)="togglePasswordVisibility()">
+        <button mat-icon-button matSuffix (click)="togglePasswordVisibility()" type="button">
           <mat-icon>{{ showPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
         </button>
       </mat-form-field>
@@ -74,7 +69,7 @@
       </mat-form-field>
 
       <!-- Campos solo para conductor -->
-      <div *ngIf="role === 'DRIVER_ROLE'">
+      @if (role === 'DRIVER_ROLE') {
         <mat-form-field appearance="fill" class="full-width">
           <mat-label>Número de licencia</mat-label>
           <input matInput type="text" [(ngModel)]="licenseNumber" name="licenseNumber" placeholder="Licencia" autocomplete="off" required />
@@ -83,7 +78,7 @@
           <mat-label>Descripción del conductor</mat-label>
           <input matInput type="text" [(ngModel)]="driverDescription" name="driverDescription" placeholder="Descripción" autocomplete="off" required />
         </mat-form-field>
-      </div>
+      }
 
       <!-- Aceptar términos y condiciones -->
       <mat-checkbox [(ngModel)]="termsAccepted" name="terms" required>
@@ -94,26 +89,13 @@
       <button mat-raised-button color="accent" type="submit" [disabled]="!registerForm.form.valid">
         Registrar
       </button>
-
-      <button mat-raised-button color="accent" type="submit">
-        <a href="#" class="btn-link" (click)="navigateToLogin()">Iniciar sesión</a>
-      </button>
     </form>
 
-    <!-- Registrarse con redes sociales -->
-<!--    <div class="or-register-with">-->
-<!--      <p>O regístrese con</p>-->
-<!--      <div class="social-icons">-->
-<!--        <button mat-icon-button aria-label="Registrarse con Google">-->
-<!--          <mat-icon svgIcon="google"></mat-icon>-->
-<!--        </button>-->
-<!--        <button mat-icon-button aria-label="Registrarse con Facebook">-->
-<!--          <mat-icon svgIcon="facebook"></mat-icon>-->
-<!--        </button>-->
-<!--        <button mat-icon-button aria-label="Registrarse con Apple">-->
-<!--          <mat-icon svgIcon="apple"></mat-icon>-->
-<!--        </button>-->
-<!--      </div>-->
-<!--    </div>-->
+    <!-- Botón para ir a login -->
+    <div class="login-link">
+      <button mat-button color="primary" (click)="navigateToLogin()">
+        ¿Ya tienes cuenta? Inicia sesión
+      </button>
+    </div>
   </div>
 </div>
