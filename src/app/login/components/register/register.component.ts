@@ -2,13 +2,14 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../service/auth.service';
+import { CommonModule } from '@angular/common';
 
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { NgOptimizedImage } from '@angular/common';
+import { MatRadioModule } from '@angular/material/radio';
 
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
@@ -17,12 +18,14 @@ import { MessageService } from 'primeng/api';
   selector: 'app-register',
   standalone: true,
   imports: [
+    CommonModule,
     FormsModule,
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
     MatIconModule,
     MatCheckboxModule,
+    MatRadioModule,
     ToastModule,
   ],
   templateUrl: './register.component.html',
@@ -38,6 +41,10 @@ export class RegisterComponent {
   password = '';
   showPassword = false;
   termsAccepted = false;
+  role: string = 'PASSENGER_ROLE';
+  profilePhotoUrl: string = '';
+  licenseNumber: string = '';
+  driverDescription: string = '';
 
   constructor(
     private authService: AuthService,
@@ -55,15 +62,40 @@ export class RegisterComponent {
       return;
     }
 
-    const email = this.email;
-    const firstName = this.firstName;
-    const lastName = this.lastName;
-    const phoneNumber = this.phoneNumber;
-    const dniNumber = this.dniNumber;
-    const password = this.password;
-    const role = 'PASSENGER_ROLE';
+    // Validación de DNI (8 dígitos)
+    if (!/^\d{8}$/.test(this.dniNumber)) {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'El DNI debe tener 8 dígitos numéricos.',
+      });
+      return;
+    }
 
-    this.authService.register(email, firstName, lastName, phoneNumber, dniNumber, password, role).subscribe({
+    // Validación de campos específicos para conductores
+    if (this.role === 'DRIVER_ROLE') {
+      if (!this.licenseNumber || !this.driverDescription) {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Los conductores deben completar el número de licencia y descripción.',
+        });
+        return;
+      }
+    }
+
+    this.authService.register(
+      this.email,
+      this.firstName,
+      this.lastName,
+      this.phoneNumber,
+      this.dniNumber,
+      this.password,
+      this.role,
+      this.profilePhotoUrl,
+      this.licenseNumber,
+      this.driverDescription
+    ).subscribe({
       next: () => {
         this.messageService.add({
           severity: 'success',

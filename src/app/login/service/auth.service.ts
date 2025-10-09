@@ -11,7 +11,7 @@ import { environment } from '../../../environments/environments';
 export class AuthService {
   private apiUrl = `${environment.backendUrl}/api/v1/authentication`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   // Método para obtener el token desde localStorage
   getToken(): string | null {
@@ -45,20 +45,37 @@ export class AuthService {
   }
 
   // Método de registro
-  register(email: string, firstName: string, lastName: string, phoneNumber: string, dniNumber: string, password: string, role: string = 'PASSENGER_ROLE'): Observable<any> {
+  register(
+    email: string,
+    firstName: string,
+    lastName: string,
+    phoneNumber: string,
+    dniNumber: string,
+    password: string,
+    role: string = 'PASSENGER_ROLE',
+    profilePhotoUrl: string = '',
+    licenseNumber?: string,
+    driverDescription?: string
+  ): Observable<any> {
     const url = `${this.apiUrl}/sign-up`;
-    const body = {
-      email: email,
-      password: password,
-      firstName: firstName,
-      lastName: lastName,
-      phoneNumber: phoneNumber,
-      profilePhotoUrl: '',
-      dniNumber: dniNumber,
-      licenseNumber: '',
-      driverDescription: '',
+
+    const body: any = {
+      email,
+      password,
+      firstName,
+      lastName,
+      phoneNumber,
+      profilePhotoUrl,
+      dniNumber,
       roles: [role]
     };
+
+    // Solo agrega estos campos si el usuario es DRIVER_ROLE
+    if (role === 'DRIVER_ROLE') {
+      body.licenseNumber = licenseNumber || '';
+      body.driverDescription = driverDescription || '';
+    }
+
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
 
     return this.http.post<any>(url, body, { headers }).pipe(
