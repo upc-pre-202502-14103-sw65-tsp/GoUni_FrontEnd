@@ -10,6 +10,13 @@
       </mat-form-field>
     </div>
 
+    <!-- Botón para iniciar el tour (opcional) -->
+<div class="tour-help-button">
+  <button mat-fab color="primary" (click)="startTour()" title="Iniciar tour guiado">
+    <mat-icon>help</mat-icon>
+  </button>
+</div>
+
     <div class="map-image">
       <!-- Aquí podrías integrar Google Maps API o cualquier API de mapas -->
       <div class="map-marker">
