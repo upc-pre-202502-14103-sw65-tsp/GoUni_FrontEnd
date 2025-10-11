@@ -2,6 +2,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { DestinationComponent } from "./destination/pages/destination/destination.component";
 import { AuthGuard } from "./login/auth.guard";
+import { RoleGuard } from "./login/role.guard";
 import { PageNotFoundComponent } from "./home/pages/page-not-found/page-not-found.component";
 import { PlansComponent } from "./home/pages/plans/plans.component";
 import { ServicesComponent } from "./home/pages/services/services.component";
@@ -28,7 +29,14 @@ export const routes: Routes = [
   {
     path: 'home',
     loadChildren: () => import('./home/home.module').then(m => m.HomeModule),
-    canActivate: [AuthGuard],
+    canActivate: [RoleGuard],
+    data: { expectedRole: 'PASSENGER_ROLE' }
+  },
+  {
+    path: 'driver-dashboard',
+    loadComponent: () => import('./driver-dashboard/driver-dashboard.component').then(m => m.DriverDashboardComponent),
+    canActivate: [RoleGuard],
+    data: { expectedRole: 'DRIVER_ROLE' }
   },
   { 
     path: 'plans',

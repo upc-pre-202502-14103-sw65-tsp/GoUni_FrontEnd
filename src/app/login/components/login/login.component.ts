@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { MatCard } from '@angular/material/card';
 import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { AuthService } from '../../service/auth.service';
@@ -15,7 +14,6 @@ import { MessageService } from 'primeng/api';
   selector: 'app-login',
   standalone: true,
   imports: [
-    MatCard,
     MatFormFieldModule,
     MatButtonModule,
     MatInputModule,
@@ -59,7 +57,20 @@ export class LoginComponent {
               summary: 'Éxito',
               detail: 'Bienvenido/a!',
             });
-            this.router.navigate(['/home']);
+            
+            // Verificar el rol del usuario y redirigir
+            const isDriver = this.authService.isDriver();
+            console.log('Is driver:', isDriver);
+            console.log('User email:', localStorage.getItem('userEmail'));
+            
+            // Redirigir según el rol del usuario
+            if (isDriver) {
+              console.log('Redirecting to driver dashboard');
+              this.router.navigate(['/driver-dashboard']);
+            } else {
+              console.log('Redirecting to home');
+              this.router.navigate(['/home']);
+            }
           } else {
             this.messageService.add({
               severity: 'error',

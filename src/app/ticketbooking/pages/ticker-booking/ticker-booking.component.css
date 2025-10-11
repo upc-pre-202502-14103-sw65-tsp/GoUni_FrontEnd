@@ -18,10 +18,12 @@
   .map-image {
     width: 90%;
     height: 380px; /* Altura del mapa para que coincida con el diseño de Figma */
-    background-color: #f2f2f2; /* Color de fondo gris claro */
+    background: linear-gradient(135deg, #e8f5e8 0%, #d4edda 25%, #c3e6cb 50%, #b8dacc 75%, #a8d5ba 100%);
     border-radius: 15px; /* Bordes redondeados para el mapa */
     position: relative;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra alrededor del mapa */
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15), 0 4px 10px rgba(0, 0, 0, 0.1);
+    border: 2px solid #ffffff;
+    overflow: hidden;
   }
 
   .map-marker {
@@ -31,6 +33,20 @@
     transform: translate(-50%, -50%);
     font-size: 40px;
     color: #ff5722; /* Color de marcador anaranjado */
+    filter: drop-shadow(0 4px 8px rgba(255, 87, 34, 0.3));
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0% {
+      transform: translate(-50%, -50%) scale(1);
+    }
+    50% {
+      transform: translate(-50%, -50%) scale(1.1);
+    }
+    100% {
+      transform: translate(-50%, -50%) scale(1);
+    }
   }
 }
 
@@ -123,4 +139,35 @@
       max-width: 300px;
     }
   }
+}
+
+.tour-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+}
+
+/* Personalización adicional para el tour */
+.shepherd-theme-arrows .shepherd-content {
+  border-radius: 10px;
+  padding: 15px;
+}
+
+.shepherd-theme-arrows .shepherd-title {
+  font-size: 18px;
+  font-weight: bold;
+  color: #3f51b5;
+}
+
+.shepherd-theme-arrows .shepherd-text {
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.tour-help-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
 }
