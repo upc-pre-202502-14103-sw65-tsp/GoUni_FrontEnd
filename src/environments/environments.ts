@@ -1,7 +1,7 @@
 export const environment = {
   stripePublicKey: 'pk_test_51S9f0NLJCy2eHAzkKSHJpY0ilhqCIReBgtdYjkm5ma8emRmDup7IXhPeV0qSfKS2SeXgDEEKbKG76VQuCDnRkBD300zIhuOjtT',
   // CAMBIO DE URL - Backend local para desarrollo
-  backendUrl: 'http://localhost:8080',
+  backendUrl: 'https://gouni-platform.ey.r.appspot.com',
 
   mailersend: {
     apiKey: 'mlsn.b652c3f55e85abdb2dfe6d174c69ee345af7e57ec97a5a7f0689fd92956b2522',
