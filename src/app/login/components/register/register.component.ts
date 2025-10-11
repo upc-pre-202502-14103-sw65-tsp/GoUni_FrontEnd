@@ -97,6 +97,9 @@ export class RegisterComponent {
       this.driverDescription
     ).subscribe({
       next: () => {
+        // Guardar el rol en localStorage para uso inmediato
+        this.authService.setUserRole(this.role);
+        
         this.messageService.add({
           severity: 'success',
           summary: 'Éxito',

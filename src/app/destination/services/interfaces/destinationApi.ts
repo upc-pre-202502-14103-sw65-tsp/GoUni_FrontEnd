@@ -1,4 +1,10 @@
-import {Driver} from "../../../booking/services/interface/driver";
+export interface StaticDriver {
+  name: string;
+  photo: string;
+  vehiclePlate: string;
+  discount: string;
+  discountCode: string;
+}
 
 export interface  ServiceDestination {
   id: number;
@@ -7,7 +13,7 @@ export interface  ServiceDestination {
   nextAvailableTime: string;
   rating: number;
   imageUrl: string;
-  driver: Driver;
+  driver: StaticDriver;
 }
 
 

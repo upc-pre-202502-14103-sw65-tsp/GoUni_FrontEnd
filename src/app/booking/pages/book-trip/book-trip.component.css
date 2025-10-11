@@ -1,82 +1,642 @@
+/* Reset y variables */
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  --primary-color: #2563eb;
+  --primary-hover: #1d4ed8;
+  --success-color: #10b981;
+  --success-hover: #059669;
+  --danger-color: #ef4444;
+  --danger-hover: #dc2626;
+  --gray-50: #f9fafb;
+  --gray-100: #f3f4f6;
+  --gray-200: #e5e7eb;
+  --gray-300: #d1d5db;
+  --gray-400: #9ca3af;
+  --gray-500: #6b7280;
+  --gray-600: #4b5563;
+  --gray-700: #374151;
+  --gray-800: #1f2937;
+  --gray-900: #111827;
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --border-radius: 12px;
+  --border-radius-sm: 8px;
+}
+
+/* Contenedor principal */
 .booking-container {
-  max-width: 600px;
+  max-width: 1400px;
   margin: 0 auto;
-  padding: 20px;
-  background-color: #f9f9f9;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 24px;
+  background: var(--gray-50);
+  min-height: 100vh;
+  color: var(--gray-900);
+  overflow-y: auto; /* Permite el desplazamiento vertical si el contenido es muy largo */
+  padding-bottom: 80px; /* Añade espacio extra en la parte inferior para el botón */
+}
+
+/* Asegurar visibilidad del texto */
+.booking-container * {
+  color: inherit;
+}
+
+.booking-container button {
+  color: var(--gray-700);
+}
+
+.booking-container button.selected {
+  color: white;
+}
+
+/* Header */
+.booking-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 32px;
+  padding: 24px;
+  background: white;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-sm);
 }
 
 .cancel-button {
-  background-color: #ff6b6b;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px;
+  background: var(--danger-color);
   color: white;
   border: none;
-  padding: 10px 20px;
-  border-radius: 5px;
+  border-radius: var(--border-radius-sm);
+  font-weight: 500;
   cursor: pointer;
+  transition: all 0.2s ease;
 }
 
-h1 {
-  text-align: center;
-  margin-bottom: 20px;
+.cancel-button:hover {
+  background: var(--danger-hover);
+  transform: translateY(-1px);
 }
 
-.selection {
+.header-content h1 {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--gray-900);
+  margin: 0;
+}
+
+.destination-subtitle {
+  color: var(--gray-600);
+  margin: 4px 0 0 0;
+  font-size: 16px;
+}
+
+/* Contenido principal */
+.main-content {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+/* Panel izquierdo */
+.left-panel {
   display: flex;
-  justify-content: space-between;
-  margin-bottom: 20px;
+  flex-direction: column;
+}
+
+.selection-card {
+  background: white;
+  border-radius: var(--border-radius);
+  padding: 24px;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--gray-200);
+}
+
+.selection-card h2 {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--gray-900);
+  margin: 0 0 24px 0;
+}
+
+.date-section, .time-section {
+  margin-bottom: 24px;
+}
+
+.date-section:last-child, .time-section:last-child {
+  margin-bottom: 0;
+}
+
+.date-section h3, .time-section h3 {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--gray-700);
+  margin: 0 0 12px 0;
+}
+
+.date-options {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
 }
 
 .time-options {
-  display: flex;
-  gap: 10px;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
 }
 
-.time-options button {
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+.date-button, .time-button {
+  padding: 12px 8px;
+  border: 2px solid var(--gray-200);
+  border-radius: var(--border-radius-sm);
+  background: white;
+  color: var(--gray-700) !important;
   cursor: pointer;
-  background-color: #e0e0e0;
+  transition: all 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  font-weight: 500;
+  font-size: 14px;
 }
 
-.time-options button.selected {
-  background-color: #4CAF50;
-  color: white;
+.date-button:hover, .time-button:hover {
+  border-color: var(--success-color);
+  transform: translateY(-1px);
+}
+
+.date-button.selected, .time-button.selected {
+  background: var(--success-color) !important;
+  border-color: var(--success-color) !important;
+  color: white !important;
+  box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
+}
+
+.day-number {
+  font-size: 18px;
+  font-weight: 600;
+  color: inherit;
+}
+
+.day-name {
+  font-size: 12px;
+  opacity: 0.8;
+  color: inherit;
+}
+
+/* Panel derecho */
+.right-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* Sección de conductores */
+.drivers-section {
+  background: white;
+  border-radius: var(--border-radius);
+  padding: 24px;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--gray-200);
+}
+
+.drivers-section h2 {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--gray-900);
+  margin: 0 0 20px 0;
+}
+
+.drivers-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 16px;
+}
+
+.driver-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px;
+  border: 2px solid var(--gray-200);
+  border-radius: var(--border-radius-sm);
+  background: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.driver-card:hover {
+  border-color: var(--primary-color);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.driver-card.selected {
+  border-color: var(--success-color);
+  background: #f0fdf4;
+}
+
+.driver-avatar {
+  flex-shrink: 0;
+}
+
+.driver-avatar img {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--gray-200);
 }
 
 .driver-details {
+  flex: 1;
+  min-width: 0;
+}
+
+.driver-details h4 {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--gray-900);
+  margin: 0 0 8px 0;
+}
+
+.driver-meta {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.license, .phone {
+  font-size: 14px;
+  color: var(--gray-600);
+  background: var(--gray-100);
+  padding: 4px 8px;
+  border-radius: 6px;
+}
+
+.description {
+  font-size: 14px;
+  color: var(--gray-600);
+  margin: 0;
+  line-height: 1.4;
+}
+
+.selection-indicator {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  color: var(--success-color);
+}
+
+.no-drivers {
   text-align: center;
-  margin: 20px 0;
+  padding: 48px 24px;
+  color: var(--gray-500);
 }
 
-.driver-photo {
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  margin-bottom: 10px;
+.no-drivers svg {
+  margin-bottom: 16px;
+  color: var(--gray-400);
 }
 
-.insurance-section, .discount-section, .total-section {
-  margin: 20px 0;
-  padding: 15px;
-  background-color: #fff;
-  border-radius: 5px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+/* Sección de resumen */
+.summary-section {
+  background: white;
+  border-radius: var(--border-radius);
+  padding: 24px;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--gray-200);
 }
 
-.discount-section input {
-  padding: 10px;
-  margin-right: 10px;
+.summary-section h3 {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--gray-900);
+  margin: 0 0 16px 0;
+}
+
+.summary-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.summary-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--gray-100);
+}
+
+.summary-item:last-child {
+  border-bottom: none;
+}
+
+.summary-item .label {
+  font-weight: 500;
+  color: var(--gray-600);
+}
+
+.summary-item .value {
+  font-weight: 600;
+  color: var(--gray-900);
+}
+
+/* Sección inferior */
+.bottom-section {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 24px;
+}
+
+.payment-details {
+  display: flex;
+  gap: 24px;
+}
+
+.insurance-card, .discount-card {
+  flex: 1;
+  background: white;
+  border-radius: var(--border-radius);
+  padding: 20px;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--gray-200);
+}
+
+.insurance-card h3, .discount-card h3 {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--gray-900);
+  margin: 0 0 12px 0;
+}
+
+.insurance-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.insurance-name {
+  font-weight: 500;
+  color: var(--gray-700);
+}
+
+.insurance-code {
+  font-size: 14px;
+  color: var(--gray-500);
+}
+
+.discount-input {
+  display: flex;
+  gap: 8px;
+}
+
+.discount-field {
+  flex: 1;
+  padding: 12px;
+  border: 2px solid var(--gray-200);
+  border-radius: var(--border-radius-sm);
+  font-size: 14px;
+  transition: border-color 0.2s ease;
+}
+
+.discount-field:focus {
+  outline: none;
+  border-color: var(--primary-color);
+}
+
+.apply-button {
+  padding: 12px 20px;
+  background: var(--gray-600);
+  color: white;
+  border: none;
+  border-radius: var(--border-radius-sm);
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.apply-button:hover {
+  background: var(--gray-700);
+}
+
+/* Tarjeta de total */
+.total-card {
+  background: white;
+  border-radius: var(--border-radius);
+  padding: 24px;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--gray-200);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.total-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 0;
+  border-bottom: 2px solid var(--gray-100);
+}
+
+.total-label {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--gray-700);
+}
+
+.total-amount {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--success-color);
 }
 
 .confirm-button {
-  width: 100%;
-  padding: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 16px 24px;
+  background: var(--success-color) !important;
+  color: white !important;
   border: none;
-  background-color: #4CAF50;
-  color: white;
+  border-radius: var(--border-radius-sm);
   font-size: 16px;
-  border-radius: 5px;
+  font-weight: 600;
   cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+}
+
+.confirm-button:hover:not(:disabled) {
+  background: var(--success-hover);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.confirm-button:disabled {
+  background: var(--gray-400) !important;
+  color: white !important;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Asegurar que el botón de confirmar sea siempre visible */
+.confirm-button,
+.confirm-button * {
+  color: white !important;
+  background: var(--success-color) !important;
+}
+
+.confirm-button svg {
+  color: white !important;
+  fill: none;
+  stroke: white !important;
+}
+
+.confirm-button span {
+  color: white !important;
+}
+
+/* Forzar visibilidad completa del botón */
+button.confirm-button {
+  background: #10b981 !important;
+  color: white !important;
+  border: none !important;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1) !important;
+}
+
+button.confirm-button:hover {
+  background: #059669 !important;
+  color: white !important;
+}
+
+button.confirm-button:disabled {
+  background: #9ca3af !important;
+  color: white !important;
+}
+
+/* Asegurar que todos los textos sean visibles */
+.confirm-button span,
+.confirm-button svg {
+  color: inherit !important;
+}
+
+.time-button,
+.date-button {
+  text-shadow: none;
+}
+
+.time-button span,
+.date-button span {
+  color: inherit !important;
+}
+
+/* Asegurar que el texto de los botones de fecha y hora sea siempre visible */
+.date-button span, .time-button span {
+  color: inherit !important; /* Forzar la herencia del color del botón */
+}
+
+/* Estilos específicos para botones seleccionados */
+.date-button.selected .day-number,
+.date-button.selected .day-name,
+.time-button.selected {
+  color: white !important;
+  font-weight: 600;
+}
+
+/* Asegurar que el efecto verde sea visible */
+.date-button.selected,
+.time-button.selected {
+  background: #10b981 !important;
+  border: 2px solid #10b981 !important;
+  color: white !important;
+  transform: scale(1.02);
+  transition: all 0.2s ease;
+}
+
+/* Forzar la aplicación del estilo verde */
+button.date-button.selected,
+button.time-button.selected {
+  background-color: #10b981 !important;
+  border-color: #10b981 !important;
+  color: white !important;
+}
+
+/* Estilos para el texto dentro de los botones seleccionados */
+button.date-button.selected span,
+button.time-button.selected {
+  color: white !important;
+  font-weight: 600 !important;
+}
+
+/* Estilo de depuración - forzar verde en cualquier botón seleccionado */
+.selected {
+  background: #10b981 !important;
+  border-color: #10b981 !important;
+  color: white !important;
+}
+
+/* Específico para fechas y horas */
+.date-button.selected,
+.time-button.selected {
+  background: #10b981 !important;
+  border: 2px solid #10b981 !important;
+  color: white !important;
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+  .main-content {
+    grid-template-columns: 1fr;
+  }
+  
+  .drivers-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .bottom-section {
+    grid-template-columns: 1fr;
+  }
+  
+  .payment-details {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 768px) {
+  .booking-container {
+    padding: 16px;
+  }
+  
+  .booking-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  
+  .date-options, .time-options {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  
+  .driver-card {
+    flex-direction: column;
+    text-align: center;
+    gap: 12px;
+  }
+  
+  .driver-meta {
+    justify-content: center;
+  }
 }

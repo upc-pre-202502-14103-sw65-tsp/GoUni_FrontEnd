@@ -1,59 +1,143 @@
 <app-toolbar></app-toolbar>
 
 <div class="booking-container">
-  <button class="cancel-button" (click)="goBack()">Cancelar</button>
-  <h1>Confirmación de Reserva</h1>
-  <p>Reserva tu viaje con {{ destination?.name }}</p>
-
-  <div class="selection">
-    <div>
-      <h2>Elige Fecha</h2>
-      <div class="date-options">
-        <button *ngFor="let day of days"
-                (click)="selectDate(day.date)"
-                [class.selected]="selectedDate === day.date">
-          {{ day.date.getDate() }} {{ day.dayName }}
-        </button>
-      </div>
-    </div>
-
-    <div>
-      <h2>Elige Hora</h2>
-      <div class="time-options">
-        <button *ngFor="let time of ['8:00', '10:30', '13:00', '15:00', '16:30']"
-                (click)="selectTime(time)"
-                [class.selected]="selectedTime === time">
-          {{ time }}
-        </button>
-      </div>
+  <div class="booking-header">
+    <button class="cancel-button" (click)="goBack()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M19 12H5M12 19l-7-7 7-7"/>
+      </svg>
+      Cancelar
+    </button>
+    <div class="header-content">
+      <h1>Confirmación de Reserva</h1>
+      <p class="destination-subtitle">Reserva tu viaje con {{ destination?.name }}</p>
     </div>
   </div>
 
-  <div class="driver-details" *ngIf="destination?.driver">
-    <h2>Conductor</h2>
-    <img [src]="destination.driver.photo" alt="{{ destination.driver.name }}" class="driver-photo">
-    <p><strong>{{ destination.driver.name }}</strong></p>
-    <p>Placa: {{ destination.driver.vehiclePlate }}</p>
-    <p>Ubicación: {{ destination.location }}</p>
-    <p>Fecha y Hora: {{ selectedDate ? selectedDate.toLocaleDateString() : 'Selecciona una fecha' }} a las {{ selectedTime }}</p>
+  <div class="main-content">
+    <div class="left-panel">
+      <div class="selection-card">
+        <h2>Fecha y Hora</h2>
+        <div class="date-section">
+          <h3>Elige Fecha</h3>
+          <div class="date-options">
+            <button *ngFor="let day of days"
+                    (click)="selectDate(day.date)"
+                    [class.selected]="selectedDate === day.date"
+                    class="date-button">
+              <span class="day-number">{{ day.date.getDate() }}</span>
+              <span class="day-name">{{ day.dayName }}</span>
+            </button>
+          </div>
+        </div>
+        
+        <div class="time-section">
+          <h3>Elige Hora</h3>
+          <div class="time-options">
+            <button *ngFor="let time of ['8:00', '10:30', '13:00', '15:00', '16:30']"
+                    (click)="selectTime(time)"
+                    [class.selected]="selectedTime === time"
+                    class="time-button">
+              {{ time }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="right-panel">
+
+      <div class="drivers-section">
+        <h2>Conductores Disponibles</h2>
+        <div class="drivers-grid" *ngIf="availableDrivers.length > 0">
+          <div class="driver-card" 
+               *ngFor="let driver of availableDrivers" 
+               [class.selected]="selectedDriver?.id === driver.id"
+               (click)="selectDriver(driver)">
+            <div class="driver-avatar">
+              <img [src]="driver.profilePhotoUrl || 'assets/avatar.png'" 
+                   [alt]="driver.firstName + ' ' + driver.lastName">
+            </div>
+            <div class="driver-details">
+              <h4>{{ driver.firstName }} {{ driver.lastName }}</h4>
+              <div class="driver-meta">
+                <span class="license">{{ driver.licenseNumber }}</span>
+                <span class="phone">{{ driver.phoneNumber }}</span>
+              </div>
+              <p class="description" *ngIf="driver.driverDescription">{{ driver.driverDescription }}</p>
+            </div>
+            <div class="selection-indicator">
+              <svg *ngIf="selectedDriver?.id === driver.id" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20 6L9 17l-5-5"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="availableDrivers.length === 0" class="no-drivers">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M9 12l2 2 4-4"/>
+            <circle cx="12" cy="12" r="10"/>
+          </svg>
+          <p>No hay conductores disponibles en este momento.</p>
+        </div>
+      </div>
+
+      <div class="summary-section" *ngIf="selectedDriver">
+        <h3>Resumen de Reserva</h3>
+        <div class="summary-card">
+          <div class="summary-item">
+            <span class="label">Conductor:</span>
+            <span class="value">{{ selectedDriver.firstName }} {{ selectedDriver.lastName }}</span>
+          </div>
+          <div class="summary-item">
+            <span class="label">Destino:</span>
+            <span class="value">{{ destination?.name }}</span>
+          </div>
+          <div class="summary-item">
+            <span class="label">Fecha:</span>
+            <span class="value">{{ selectedDate ? selectedDate.toLocaleDateString() : 'Selecciona una fecha' }}</span>
+          </div>
+          <div class="summary-item">
+            <span class="label">Hora:</span>
+            <span class="value">{{ selectedTime || 'Selecciona una hora' }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
-  <div class="insurance-section">
-    <h3>Seleccionar Seguro</h3>
-    <p>ABC Insurance</p>
-    <p>Código: ABCNAME12345</p>
-  </div>
+  <div class="bottom-section">
+    <div class="payment-details">
+      <div class="insurance-card">
+        <h3>Seguro Incluido</h3>
+        <div class="insurance-info">
+          <span class="insurance-name">ABC Insurance</span>
+          <span class="insurance-code">Código: ABCNAME12345</span>
+        </div>
+      </div>
 
-  <div class="discount-section">
-    <h3>Descuento</h3>
-    <input type="text" placeholder="Ingrese código de descuento" [(ngModel)]="discountCode">
-    <button (click)="applyDiscount()">Aplicar</button>
-  </div>
+      <div class="discount-card">
+        <h3>Descuento</h3>
+        <div class="discount-input">
+          <input type="text" 
+                 placeholder="Código de descuento" 
+                 [(ngModel)]="discountCode"
+                 class="discount-field">
+          <button (click)="applyDiscount()" class="apply-button">Aplicar</button>
+        </div>
+      </div>
+    </div>
 
-  <div class="total-section">
-    <h2>Total a Pagar</h2>
-    <p>S/. {{ total | number:'1.2-2' }}</p>
+    <div class="total-card">
+      <div class="total-info">
+        <span class="total-label">Total a Pagar</span>
+        <span class="total-amount">S/. {{ total | number:'1.2-2' }}</span>
+      </div>
+      <button class="confirm-button" 
+              (click)="confirmReservation()"
+              [disabled]="!selectedDriver || !selectedDate || !selectedTime">
+        Confirmar Viaje
+      </button>
+    </div>
   </div>
-
-  <button class="confirm-button" (click)="confirmReservation()">Confirmar Viaje</button>
 </div>

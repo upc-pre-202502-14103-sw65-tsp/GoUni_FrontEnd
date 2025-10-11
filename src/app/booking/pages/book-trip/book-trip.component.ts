@@ -1,31 +1,18 @@
 import {Component, OnInit} from '@angular/core';
-import {MatButtonToggle, MatButtonToggleGroup} from "@angular/material/button-toggle";
-import {MatFormField} from "@angular/material/form-field";
 import {ActivatedRoute, Router} from "@angular/router";
-import {MatDivider} from "@angular/material/divider";
-import {MatCard} from "@angular/material/card";
 import {FormsModule} from "@angular/forms";
 import {CommonModule, DecimalPipe, NgForOf} from "@angular/common";
-import {MatButton} from "@angular/material/button";
-import {MatInput} from "@angular/material/input";
 import { Location } from '@angular/common';
 import {ToolbarComponent} from "../../../home/components/toolbar/toolbar.component";
-import {ReservaService} from "../../../maps/pages/reservation-cards/service/reserva.service";
 import {DestinationApiService} from "../../../destination/services/destination-api.service";
+import {DriverService, Driver} from "../../services/driver.service";
 
 @Component({
   selector: 'app-book-trip',
   standalone: true,
   imports: [
-    MatButtonToggleGroup,
-    MatButtonToggle,
-    MatFormField,
-    MatDivider,
-    MatCard,
     FormsModule,
     NgForOf,
-    MatButton,
-    MatInput,
     DecimalPipe,
     CommonModule,
     ToolbarComponent
@@ -42,17 +29,21 @@ export class BookTripComponent implements OnInit {
   total: number = 20;
   discountApplied: boolean = false;
   days: { date: Date, dayName: string }[] = [];
+  availableDrivers: Driver[] = [];
+  selectedDriver: Driver | null = null;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private destinationService: DestinationApiService,
+    private driverService: DriverService,
     private location: Location
   ) {}
 
   ngOnInit(): void {
     this.destinationId = +this.route.snapshot.paramMap.get('id')!;
     this.loadDestination();
+    this.loadDrivers();
     this.generateDays();
   }
 
@@ -63,6 +54,19 @@ export class BookTripComponent implements OnInit {
       },
       (error) => {
         console.error('Error loading destination', error);
+      }
+    );
+  }
+
+  loadDrivers(): void {
+    this.driverService.getAllDrivers().subscribe(
+      (drivers) => {
+        this.availableDrivers = drivers;
+        console.log('Drivers loaded:', drivers);
+      },
+      (error) => {
+        console.error('Error loading drivers', error);
+        this.availableDrivers = [];
       }
     );
   }
@@ -79,13 +83,17 @@ export class BookTripComponent implements OnInit {
     }
   }
 
+  selectDriver(driver: Driver): void {
+    this.selectedDriver = driver;
+  }
+
   applyDiscount(): void {
-    if (this.discountCode.toLowerCase() === this.destination.driver.discountCode.toLowerCase()) {
+    // Por ahora, simplificamos el descuento ya que no tenemos códigos específicos de conductores
+    if (this.discountCode.toLowerCase() === 'descuento10') {
       if (!this.discountApplied) {
-        const discountValue = parseFloat(this.destination.driver.discount) / 100;
-        this.total = this.total - (this.total * discountValue);
+        this.total = this.total * 0.9; // 10% de descuento
         this.discountApplied = true;
-        alert(`Descuento del ${this.destination.driver.discount} aplicado.`);
+        alert('Descuento del 10% aplicado.');
       } else {
         alert('El descuento ya ha sido aplicado.');
       }
@@ -100,8 +108,14 @@ export class BookTripComponent implements OnInit {
       return;
     }
 
-    alert(`Reserva confirmada para ${this.destination.name} el día ${this.selectedDate} a las ${this.selectedTime}`);
-    this.router.navigate(['/reservations']);  }
+    if (!this.selectedDriver) {
+      alert("Por favor, selecciona un conductor para continuar.");
+      return;
+    }
+
+    alert(`Reserva confirmada para ${this.destination.name} con el conductor ${this.selectedDriver.firstName} ${this.selectedDriver.lastName} el día ${this.selectedDate.toLocaleDateString()} a las ${this.selectedTime}`);
+    this.router.navigate(['/reservations']);
+  }
 
   goBack(): void {
     this.location.back();
