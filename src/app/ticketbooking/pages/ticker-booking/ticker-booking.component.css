@@ -124,3 +124,34 @@
     }
   }
 }
+
+.tour-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+}
+
+/* Personalización adicional para el tour */
+.shepherd-theme-arrows .shepherd-content {
+  border-radius: 10px;
+  padding: 15px;
+}
+
+.shepherd-theme-arrows .shepherd-title {
+  font-size: 18px;
+  font-weight: bold;
+  color: #3f51b5;
+}
+
+.shepherd-theme-arrows .shepherd-text {
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.tour-help-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+}
