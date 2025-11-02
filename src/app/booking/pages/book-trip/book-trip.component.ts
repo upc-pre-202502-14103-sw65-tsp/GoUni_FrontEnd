@@ -6,6 +6,7 @@ import { Location } from '@angular/common';
 import {ToolbarComponent} from "../../../home/components/toolbar/toolbar.component";
 import {DestinationApiService} from "../../../destination/services/destination-api.service";
 import {DriverService, Driver} from "../../services/driver.service";
+import {MatButtonModule} from '@angular/material/button';
 
 @Component({
   selector: 'app-book-trip',
@@ -15,7 +16,8 @@ import {DriverService, Driver} from "../../services/driver.service";
     NgForOf,
     DecimalPipe,
     CommonModule,
-    ToolbarComponent
+    ToolbarComponent,
+    MatButtonModule
   ],
   templateUrl: './book-trip.component.html',
   styleUrl: './book-trip.component.css'
@@ -88,10 +90,9 @@ export class BookTripComponent implements OnInit {
   }
 
   applyDiscount(): void {
-    // Por ahora, simplificamos el descuento ya que no tenemos códigos específicos de conductores
     if (this.discountCode.toLowerCase() === 'descuento10') {
       if (!this.discountApplied) {
-        this.total = this.total * 0.9; // 10% de descuento
+        this.total = this.total * 0.9;
         this.discountApplied = true;
         alert('Descuento del 10% aplicado.');
       } else {
@@ -114,7 +115,101 @@ export class BookTripComponent implements OnInit {
     }
 
     alert(`Reserva confirmada para ${this.destination.name} con el conductor ${this.selectedDriver.firstName} ${this.selectedDriver.lastName} el día ${this.selectedDate.toLocaleDateString()} a las ${this.selectedTime}`);
+    
     this.router.navigate(['/reservations']);
+  }
+
+  addToGoogleCalendar(): void {
+    console.log('=== INICIO: Agregar a Google Calendar ===');
+    console.log('Botón presionado en:', new Date().toLocaleString());
+    
+    // VALORES CON FALLBACK - Siempre tendrá algo para mostrar
+    const now = new Date();
+    console.log('Fecha/Hora actual:', now);
+    
+    // Usar fecha seleccionada o fecha actual como fallback
+    let startDate: Date;
+    if (this.selectedDate && this.selectedTime) {
+      console.log('Usando fecha seleccionada:', this.selectedDate);
+      console.log('Usando hora seleccionada:', this.selectedTime);
+      
+      const [hours, minutes] = this.selectedTime.split(':').map(Number);
+      startDate = new Date(this.selectedDate);
+      startDate.setHours(hours, minutes, 0, 0);
+    } else {
+      console.log('⚠️ No hay fecha/hora seleccionada, usando fecha actual');
+      startDate = new Date(now);
+      // Redondear a la próxima hora
+      startDate.setMinutes(0, 0, 0);
+      startDate.setHours(startDate.getHours() + 1);
+    }
+    console.log('Fecha de inicio final:', startDate);
+
+    // Fecha de fin (1 hora después)
+    const endDate = new Date(startDate);
+    endDate.setHours(startDate.getHours() + 1);
+    console.log('Fecha de fin final:', endDate);
+
+    // Formato para Google Calendar
+    const start = startDate.toISOString().replace(/-|:|\.\d{3}/g, "");
+    const end = endDate.toISOString().replace(/-|:|\.\d{3}/g, "");
+    console.log('Formato Google Calendar START:', start);
+    console.log('Formato Google Calendar END:', end);
+
+    // Información del conductor con fallback
+    const driverName = this.selectedDriver 
+      ? `${this.selectedDriver.firstName} ${this.selectedDriver.lastName}`
+      : 'Por asignar';
+    const driverPhone = this.selectedDriver?.phoneNumber || 'N/A';
+    console.log('Conductor:', driverName);
+    console.log('Teléfono conductor:', driverPhone);
+
+    // Información del destino con fallback
+    const destinationName = this.destination?.name || 'Destino por confirmar';
+    const destinationAddress = this.destination?.address || this.destination?.name || 'Dirección por confirmar';
+    console.log('Destino:', destinationName);
+    console.log('Dirección:', destinationAddress);
+
+    // Total con fallback
+    const totalAmount = this.total || 0;
+    console.log('Total a pagar:', totalAmount);
+
+    // Construir el texto del evento
+    const text = encodeURIComponent(`Reserva GoUni: ${destinationName}`);
+    const details = encodeURIComponent(
+      `🚗 Reserva realizada en GoUni\n\n` +
+      `👤 Conductor: ${driverName}\n` +
+      `📱 Teléfono: ${driverPhone}\n` +
+      `📍 Destino: ${destinationName}\n` +
+      `💰 Total: S/. ${totalAmount.toFixed(2)}\n\n` +
+      `Fecha de reserva: ${now.toLocaleString()}`
+    );
+    const location = encodeURIComponent(destinationAddress);
+
+    console.log('Texto del evento (decodificado):', decodeURIComponent(text));
+    console.log('Detalles del evento (decodificado):', decodeURIComponent(details));
+    console.log('Ubicación (decodificado):', decodeURIComponent(location));
+
+    // Construir URL de Google Calendar
+    const url = `https://www.google.com/calendar/render?action=TEMPLATE&text=${text}&dates=${start}/${end}&details=${details}&location=${location}&sf=true&output=xml`;
+    
+    console.log('URL completa de Google Calendar:');
+    console.log(url);
+    console.log('URL decodificada:');
+    console.log(decodeURIComponent(url));
+
+    // Abrir en nueva ventana
+    console.log('Abriendo ventana de Google Calendar...');
+    const windowOpened = window.open(url, '_blank');
+    
+    if (windowOpened) {
+      console.log('✅ Ventana abierta exitosamente');
+    } else {
+      console.log('❌ No se pudo abrir la ventana (posible bloqueo de pop-ups)');
+      alert('Por favor, permite pop-ups para agregar el evento a Google Calendar');
+    }
+    
+    console.log('=== FIN: Agregar a Google Calendar ===\n\n');
   }
 
   goBack(): void {

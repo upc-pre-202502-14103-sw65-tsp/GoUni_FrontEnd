@@ -135,9 +135,24 @@
       </div>
       <button class="confirm-button" 
               (click)="confirmReservation()"
-              [disabled]="!selectedDriver || !selectedDate || !selectedTime">
+              >
         Confirmar Viaje
       </button>
     </div>
+
+    <div class="total-card">
+      <div class="total-info">
+        <span class="total-label">Total a Pagar</span>
+        <span class="total-amount">S/. {{ total | number:'1.2-2' }}</span>
+      </div>
+
+      <button mat-raised-button 
+              color="primary" 
+              (click)="addToGoogleCalendar()"
+              style="margin-top: 10px; width: 100%; width: 200px;">
+        📅 Agregar a Google Calendar
+      </button>
+    </div>
+
   </div>
 </div>
