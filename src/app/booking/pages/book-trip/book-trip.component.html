@@ -24,6 +24,7 @@
             <button *ngFor="let day of days"
                     (click)="selectDate(day.date)"
                     [class.selected]="selectedDate === day.date"
+                    style="background-color: #059669 !important;"
                     class="date-button">
               <span class="day-number">{{ day.date.getDate() }}</span>
               <span class="day-name">{{ day.dayName }}</span>
@@ -37,6 +38,7 @@
             <button *ngFor="let time of ['8:00', '10:30', '13:00', '15:00', '16:30']"
                     (click)="selectTime(time)"
                     [class.selected]="selectedTime === time"
+                    style="background-color: #059669 !important;"
                     class="time-button">
               {{ time }}
             </button>
@@ -122,6 +124,7 @@
           <input type="text" 
                  placeholder="Código de descuento" 
                  [(ngModel)]="discountCode"
+                 style="background-color: white !important;"
                  class="discount-field">
           <button (click)="applyDiscount()" class="apply-button">Aplicar</button>
         </div>
@@ -135,9 +138,25 @@
       </div>
       <button class="confirm-button" 
               (click)="confirmReservation()"
-              [disabled]="!selectedDriver || !selectedDate || !selectedTime">
+              style="background-color: #059669 !important;"
+              >
         Confirmar Viaje
       </button>
     </div>
+
+    <div class="total-card">
+      <div class="total-info">
+        <span class="total-label">Total a Pagar</span>
+        <span class="total-amount">S/. {{ total | number:'1.2-2' }}</span>
+      </div>
+
+      <button mat-raised-button 
+              color="primary" 
+              (click)="addToGoogleCalendar()"
+              style="margin-top: 10px; width: 100%; width: 200px;">
+        📅 Agregar a Google Calendar
+      </button>
+    </div>
+
   </div>
 </div>
