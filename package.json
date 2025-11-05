@@ -27,6 +27,7 @@
     "@stripe/stripe-js": "^4.10.0",
     "@types/sockjs-client": "^1.5.3",
     "buffer": "^6.0.3",
+    "file-saver": "^2.0.5",
     "mapbox-gl": "^3.6.0",
     "ngx-stripe": "^18.1.0",
     "primeicons": "^7.0.0",
@@ -34,6 +35,7 @@
     "rxjs": "~7.8.0",
     "sockjs-client": "^1.6.1",
     "tslib": "^2.3.0",
+    "xlsx": "^0.18.5",
     "zone.js": "~0.14.10"
   },
   "devDependencies": {
