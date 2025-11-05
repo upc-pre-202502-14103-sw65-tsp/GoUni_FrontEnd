@@ -1,0 +1,55 @@
+<div class="reservations-container">
+  <div class="header">
+    <h1>Mis Reservas</h1>
+    <button mat-raised-button color="primary" (click)="exportExcel()" [disabled]="isLoading">
+      <span *ngIf="!isLoading">📊 Exportar reservas a Excel</span>
+      <span *ngIf="isLoading">Cargando...</span>
+    </button>
+  </div>
+
+  <div *ngIf="isLoading" class="loading">
+    <p>Cargando tus reservas...</p>
+  </div>
+
+  <div *ngIf="!isLoading && reservations.length === 0" class="no-reservations">
+    <div class="empty-state">
+      <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+      </svg>
+      <h3>No tienes reservas</h3>
+      <p>Tus reservas aparecerán aquí una vez que confirmes un viaje.</p>
+    </div>
+  </div>
+
+  <div *ngIf="!isLoading && reservations.length > 0" class="reservations-list">
+    <div class="reservations-count">
+      <p>Total de reservas: <strong>{{ reservations.length }}</strong></p>
+    </div>
+    
+    <div class="reservation-card" *ngFor="let reservation of reservations">
+      <div class="reservation-header">
+        <h3>{{ reservation.destination.name }}</h3>
+        <span class="status-badge" [class]="reservation.status">{{ reservation.status }}</span>
+      </div>
+      
+      <div class="reservation-details">
+        <div class="detail">
+          <span class="label">Conductor:</span>
+          <span class="value">{{ reservation.driver.firstName }} {{ reservation.driver.lastName }}</span>
+        </div>
+        <div class="detail">
+          <span class="label">Fecha:</span>
+          <span class="value">{{ reservation.date | date:'fullDate' }}</span>
+        </div>
+        <div class="detail">
+          <span class="label">Hora:</span>
+          <span class="value">{{ reservation.time }}</span>
+        </div>
+        <div class="detail">
+          <span class="label">Precio:</span>
+          <span class="value price">S/. {{ reservation.price | number:'1.2-2' }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
