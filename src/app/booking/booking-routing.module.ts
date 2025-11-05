@@ -4,18 +4,17 @@ import { BookTripComponent } from "./pages/book-trip/book-trip.component";
 import { MyReservationsComponent } from "./pages/my-reservations/my-reservations.component";
 
 const routes: Routes = [
-  { 
-    path: ':id',
-    component: BookTripComponent 
+  {
+    path: 'book/:id',
+    component: BookTripComponent
   },
   {
-    path: '',
-    redirectTo: 'my-reservations',
-    pathMatch: 'full'
-  },
-  {
-    path: 'my-reservations',
+    path: 'reservations',
     component: MyReservationsComponent
+  },
+  {
+    path: ':id',
+    component: BookTripComponent
   }
 ];
 

@@ -176,7 +176,8 @@ export class BookTripComponent implements OnInit, OnDestroy {
       total: this.total
     });
 
-    this.router.navigate(['/reservations']);
+    // this.router.navigate(['/reservations']);
+    this.router.navigate(['/booking/reservations']);
   }
 
   addToGoogleCalendar(): void {

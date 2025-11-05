@@ -75,7 +75,7 @@ export const routes: Routes = [
   },
   {
     path: 'reservations',
-    loadChildren: () => import('./maps/pages/reservation-cards/reservation-cards.module').then(m => m.ReservationCardsModule),
+    loadChildren: () => import('./booking/booking.module').then(m => m.BookingModule),
     canActivate: [AuthGuard],
   },
   {
