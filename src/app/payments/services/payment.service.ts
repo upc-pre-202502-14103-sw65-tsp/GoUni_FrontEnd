@@ -99,10 +99,12 @@ export class PaymentService {
 
   async createPaymentIntent(amount: number, currency: string = 'usd'): Promise<any> {
     try {
+      const passengerUserId = localStorage.getItem('userId');
       const response = await firstValueFrom(
-        this.http.post(`${environment.backendUrl}/create-payment-intent`, {
+        this.http.post(`${environment.backendUrl}/api/v1/payment-intents/create-payment-intent`, {
           amount,
-          currency
+          currency,
+          passengerUserId
         })
       );
       return response;
@@ -115,7 +117,7 @@ export class PaymentService {
   async confirmPayment(clientSecret: string, paymentMethodId: string): Promise<any> {
     try {
       const response = await firstValueFrom(
-        this.http.post(`${environment.backendUrl}/confirm-payment`, {
+        this.http.post(`${environment.backendUrl}/api/v1/payment-intents/confirm-payment`, {
           clientSecret,
           paymentMethodId
         })
@@ -166,7 +168,7 @@ export class PaymentService {
           customerName: customerData.name,
           customerEmail: customerData.email,
           planName: planName,
-          amount: amount / 100,
+          amount: amount,
           currency: currency.toUpperCase(),
           paymentStatus: 'success',
           paymentDate: new Date(),
@@ -192,7 +194,7 @@ export class PaymentService {
         customerName: customerData.name,
         customerEmail: customerData.email,
         planName: planName,
-        amount: amount / 100,
+        amount: amount,
         currency: currency.toUpperCase(),
         paymentStatus: 'failed',
         paymentDate: new Date(),

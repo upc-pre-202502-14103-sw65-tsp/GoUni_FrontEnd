@@ -73,7 +73,7 @@ export class PaymentFormComponent implements OnInit, AfterViewInit, OnDestroy {
       console.log('🔸 [PaymentForm] Datos del formulario:', formValue);
 
       const result = await this.paymentService.processCompletePayment(
-        formValue.amount * 100,
+        formValue.amount,
         'usd',
         { name: formValue.name, email: formValue.email },
         this.planName

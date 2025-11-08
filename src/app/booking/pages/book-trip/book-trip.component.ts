@@ -83,7 +83,7 @@ export class BookTripComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (drivers) => {
           this.isLoadingDrivers = false;
-          
+
           if (!drivers || drivers.length === 0) {
             console.warn('⚠️ No hay conductores disponibles, usando datos de respaldo');
             this.availableDrivers = this.driverService.getMockDrivers();
@@ -157,7 +157,7 @@ export class BookTripComponent implements OnInit, OnDestroy {
     }
 
     // Mensaje de confirmación detallado
-    const confirmationMessage = 
+    const confirmationMessage =
       `🎉 Reserva confirmada\n\n` +
       `📍 Destino: ${this.destination.name}\n` +
       `👤 Conductor: ${this.selectedDriver.firstName} ${this.selectedDriver.lastName}\n` +
@@ -167,7 +167,7 @@ export class BookTripComponent implements OnInit, OnDestroy {
       `💰 Total: S/. ${this.total.toFixed(2)}`;
 
     alert(confirmationMessage);
-    
+
     console.log('✅ Reserva confirmada:', {
       destination: this.destination,
       driver: this.selectedDriver,
@@ -182,7 +182,7 @@ export class BookTripComponent implements OnInit, OnDestroy {
 
   addToGoogleCalendar(): void {
     console.log('📅 === INICIO: Agregar a Google Calendar ===');
-    
+
     const now = new Date();
     let startDate: Date;
 
@@ -208,7 +208,7 @@ export class BookTripComponent implements OnInit, OnDestroy {
     const end = endDate.toISOString().replace(/-|:|\.\d{3}/g, "");
 
     // Información con fallbacks
-    const driverName = this.selectedDriver 
+    const driverName = this.selectedDriver
       ? `${this.selectedDriver.firstName} ${this.selectedDriver.lastName}`
       : 'Por asignar';
     const driverPhone = this.selectedDriver?.phoneNumber || 'N/A';
@@ -230,15 +230,15 @@ export class BookTripComponent implements OnInit, OnDestroy {
       `${destinationAddress}\n\n` +
       `💰 DETALLES DEL PAGO\n` +
       `Total: S/. ${totalAmount.toFixed(2)}\n` +
-      `${this.discountApplied ? '✅ Descuento aplicado (10%)' : ''}\n\n` +
-      `📅 Reserva realizada: ${now.toLocaleString('es-PE')}\n\n` +
+      `${this.discountApplied ? ' Descuento aplicado (10%)' : ''}\n\n` +
+      ` Reserva realizada: ${now.toLocaleString('es-PE')}\n\n` +
       `---\n` +
       `Generado por GoUni App`
     );
     const location = encodeURIComponent(destinationAddress);
 
     // URL de Google Calendar
-    const url = 
+    const url =
       `https://www.google.com/calendar/render?` +
       `action=TEMPLATE&` +
       `text=${text}&` +
@@ -258,14 +258,14 @@ export class BookTripComponent implements OnInit, OnDestroy {
 
     // Abrir en nueva ventana
     const windowOpened = window.open(url, '_blank');
-    
+
     if (windowOpened) {
       console.log('✅ Ventana de Google Calendar abierta exitosamente');
     } else {
       console.error('❌ No se pudo abrir la ventana (bloqueo de pop-ups)');
       alert('⚠️ Por favor, permite pop-ups para agregar el evento a Google Calendar');
     }
-    
+
     console.log('📅 === FIN: Agregar a Google Calendar ===\n');
   }
 

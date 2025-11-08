@@ -7,7 +7,7 @@ export class ExportReservationsService {
 
   exportToExcel(reservations: any[]): void {
     if (!reservations || reservations.length === 0) {
-      console.warn('⚠️ No hay reservas para exportar');
+      console.warn(' No hay reservas para exportar');
       this.createEmptyExcelFile();
       return;
     }
@@ -47,7 +47,7 @@ export class ExportReservationsService {
 
       const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
       this.saveExcelFile(excelBuffer, `reservas_gouni_${new Date().getTime()}.xlsx`);
-      
+
     } catch (error) {
       console.error('❌ Error en exportToExcel:', error);
       throw new Error('Error al generar el archivo Excel');
@@ -93,8 +93,8 @@ export class ExportReservationsService {
 
   private saveExcelFile(buffer: any, fileName: string): void {
     try {
-      const blob = new Blob([buffer], { 
-        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' 
+      const blob = new Blob([buffer], {
+        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
       });
       saveAs(blob, fileName);
     } catch (error) {

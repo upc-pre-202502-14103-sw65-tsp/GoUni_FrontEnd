@@ -20,18 +20,18 @@ export interface PaymentNotificationData {
 })
 export class EmailService {
     private http = inject(HttpClient);
-
-    private readonly mailersendUrl = `${environment.mailersend.apiUrl}/email`;
+    // Usar backend para evitar CORS y no exponer claves en el navegador
+    private readonly backendEmailUrl = `${environment.backendUrl}/api/v1/emails/send`;
 
     /**
      * Envía notificación de pago (éxito o fallo)
      */
     async sendPaymentNotification(data: PaymentNotificationData): Promise<{ success: boolean; message?: string }> {
-        console.log('🔸 [EmailService] sendPaymentNotification llamado:', data);
+        console.log('[EmailService] sendPaymentNotification llamado:', data);
 
         const subject = data.paymentStatus === 'success'
-            ? `✅ Pago Exitoso - ${data.planName}`
-            : `❌ Pago Fallido - ${data.planName}`;
+            ? `Pago Exitoso - ${data.planName}`
+            : `Pago Fallido - ${data.planName}`;
 
         const htmlContent = this.generatePaymentNotificationHTML(data, subject);
         const textContent = this.generatePaymentNotificationText(data, subject);
@@ -52,18 +52,24 @@ export class EmailService {
             text: textContent
         };
 
-        const headers = new HttpHeaders({
-            'Authorization': `Bearer ${environment.mailersend.apiKey}`,
-            'Content-Type': 'application/json'
-        });
-
         try {
-            console.log('📧 [EmailService] Enviando email:', emailData);
-            await firstValueFrom(this.http.post(this.mailersendUrl, emailData, { headers }));
-            console.log('✅ [EmailService] Email enviado exitosamente');
+            console.log('[EmailService] Enviando email via backend:', {
+                recipient: data.customerEmail,
+                subject,
+                msgBody: textContent
+            });
+
+            // Backend espera EmailDetails { recipient, subject, msgBody, attachment }
+            await firstValueFrom(this.http.post(this.backendEmailUrl, {
+                recipient: data.customerEmail,
+                subject,
+                msgBody: textContent,
+                attachment: null
+            }));
+            console.log('[EmailService] Email enviado exitosamente');
             return { success: true };
         } catch (error: any) {
-            console.error('❌ [EmailService] Error enviando notificación de pago:', error);
+            console.error('[EmailService] Error enviando notificación de pago:', error);
             return {
                 success: false,
                 message: error?.error?.message || 'Error enviando notificación por email'
@@ -75,9 +81,9 @@ export class EmailService {
      * Envía notificación de bienvenida después de pago exitoso
      */
     async sendWelcomeNotification(data: Omit<PaymentNotificationData, 'paymentStatus' | 'errorMessage'>): Promise<{ success: boolean; message?: string }> {
-        console.log('🔸 [EmailService] sendWelcomeNotification llamado:', data);
+        console.log('[EmailService] sendWelcomeNotification llamado:', data);
 
-        const subject = `🎉 ¡Bienvenido a ${data.planName}!`;
+        const subject = `¡Bienvenido a ${data.planName}!`;
 
         const htmlContent = this.generateWelcomeNotificationHTML(data, subject);
         const textContent = this.generateWelcomeNotificationText(data, subject);
@@ -98,18 +104,23 @@ export class EmailService {
             text: textContent
         };
 
-        const headers = new HttpHeaders({
-            'Authorization': `Bearer ${environment.mailersend.apiKey}`,
-            'Content-Type': 'application/json'
-        });
-
         try {
-            console.log('📧 [EmailService] Enviando email de bienvenida:', emailData);
-            await firstValueFrom(this.http.post(this.mailersendUrl, emailData, { headers }));
-            console.log('✅ [EmailService] Email de bienvenida enviado exitosamente');
+            console.log('[EmailService] Enviando email de bienvenida via backend:', {
+                recipient: data.customerEmail,
+                subject,
+                msgBody: textContent
+            });
+
+            await firstValueFrom(this.http.post(this.backendEmailUrl, {
+                recipient: data.customerEmail,
+                subject,
+                msgBody: textContent,
+                attachment: null
+            }));
+            console.log('[EmailService] Email de bienvenida enviado exitosamente');
             return { success: true };
         } catch (error: any) {
-            console.error('❌ [EmailService] Error enviando notificación de bienvenida:', error);
+            console.error('[EmailService] Error enviando notificación de bienvenida:', error);
             return {
                 success: false,
                 message: error?.error?.message || 'Error enviando notificación de bienvenida'
@@ -123,7 +134,7 @@ export class EmailService {
     private generatePaymentNotificationHTML(data: PaymentNotificationData, subject: string): string {
         const statusText = data.paymentStatus === 'success' ? 'EXITOSO' : 'FALLIDO';
         const statusColor = data.paymentStatus === 'success' ? '#10B981' : '#EF4444';
-        const statusIcon = data.paymentStatus === 'success' ? '✅' : '❌';
+        const statusIcon = data.paymentStatus === 'success' ? 'ok' : 'denied';
 
         return `
 <!DOCTYPE html>
@@ -133,62 +144,62 @@ export class EmailService {
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>${subject}</title>
   <style>
-    body { 
-      font-family: 'Arial', sans-serif; 
-      line-height: 1.6; 
-      color: #333; 
-      margin: 0; 
-      padding: 0; 
+    body {
+      font-family: 'Arial', sans-serif;
+      line-height: 1.6;
+      color: #333;
+      margin: 0;
+      padding: 0;
       background-color: #f4f4f4;
     }
-    .container { 
-      max-width: 600px; 
-      margin: 0 auto; 
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
       background-color: #ffffff;
     }
-    .header { 
-      background-color: #F3F4F6; 
-      padding: 20px; 
-      text-align: center; 
+    .header {
+      background-color: #F3F4F6;
+      padding: 20px;
+      text-align: center;
     }
-    .content { 
-      padding: 40px; 
+    .content {
+      padding: 40px;
     }
-    .footer { 
-      background-color: #F3F4F6; 
-      padding: 20px; 
-      text-align: center; 
-      font-size: 12px; 
+    .footer {
+      background-color: #F3F4F6;
+      padding: 20px;
+      text-align: center;
+      font-size: 12px;
       color: #6B7280;
     }
-    .amount { 
-      font-size: 24px; 
-      font-weight: bold; 
-      color: #1F2937; 
+    .amount {
+      font-size: 24px;
+      font-weight: bold;
+      color: #1F2937;
     }
-    .info-table { 
-      width: 100%; 
-      border-collapse: collapse; 
+    .info-table {
+      width: 100%;
+      border-collapse: collapse;
       margin: 20px 0;
     }
-    .info-table td { 
-      padding: 12px; 
-      border-bottom: 1px solid #E5E7EB; 
+    .info-table td {
+      padding: 12px;
+      border-bottom: 1px solid #E5E7EB;
     }
-    .info-table tr:last-child td { 
-      border-bottom: none; 
+    .info-table tr:last-child td {
+      border-bottom: none;
     }
-    .status { 
-      color: ${statusColor}; 
-      font-weight: bold; 
+    .status {
+      color: ${statusColor};
+      font-weight: bold;
     }
-    .button { 
-      display: inline-block; 
-      padding: 12px 24px; 
-      background-color: #3B82F6; 
-      color: white; 
-      text-decoration: none; 
-      border-radius: 5px; 
+    .button {
+      display: inline-block;
+      padding: 12px 24px;
+      background-color: #3B82F6;
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
       margin: 20px 0;
     }
     @media (max-width: 600px) {
@@ -202,16 +213,16 @@ export class EmailService {
     <div class="header">
       <span style="color: #6B7280; font-size: 12px;">Notificación de Pago</span>
     </div>
-    
+
     <div class="content">
       <h1 style="text-align: center; font-size: 24px; font-weight: bold; color: #1F2937; margin-bottom: 30px;">
         ${subject}
       </h1>
-      
+
       <p style="font-size: 16px; color: #4B5563;">
         Hola <strong>${data.customerName}</strong>,
       </p>
-      
+
       <p style="font-size: 16px; color: #4B5563;">
         ${data.paymentStatus === 'success'
             ? 'Tu pago ha sido procesado exitosamente. Aquí están los detalles de tu transacción:'
@@ -257,7 +268,7 @@ export class EmailService {
         <a href="https://tuapp.com/support" class="button">📞 Contactar Soporte</a>
       </div>
     </div>
-    
+
     <div class="footer">
       <p>© 2024 Tu App. Todos los derechos reservados.</p>
       <p>Este es un email automático, por favor no respondas a este mensaje.</p>
@@ -309,53 +320,53 @@ Este es un email automático, por favor no respondas a este mensaje.`.trim();
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>${subject}</title>
   <style>
-    body { 
-      font-family: 'Arial', sans-serif; 
-      line-height: 1.6; 
-      color: #333; 
-      margin: 0; 
-      padding: 0; 
+    body {
+      font-family: 'Arial', sans-serif;
+      line-height: 1.6;
+      color: #333;
+      margin: 0;
+      padding: 0;
       background-color: #f4f4f4;
     }
-    .container { 
-      max-width: 600px; 
-      margin: 0 auto; 
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
       background-color: #ffffff;
     }
-    .header { 
-      background-color: #3B82F6; 
-      padding: 40px; 
-      text-align: center; 
+    .header {
+      background-color: #3B82F6;
+      padding: 40px;
+      text-align: center;
       color: white;
     }
-    .content { 
-      padding: 40px; 
+    .content {
+      padding: 40px;
     }
-    .footer { 
-      background-color: #F3F4F6; 
-      padding: 20px; 
-      text-align: center; 
-      font-size: 12px; 
+    .footer {
+      background-color: #F3F4F6;
+      padding: 20px;
+      text-align: center;
+      font-size: 12px;
       color: #6B7280;
     }
-    .info-table { 
-      width: 100%; 
-      border-collapse: collapse; 
+    .info-table {
+      width: 100%;
+      border-collapse: collapse;
       margin: 20px 0;
     }
-    .info-table td { 
-      padding: 8px 12px; 
-      border-bottom: 1px solid #E5E7EB; 
+    .info-table td {
+      padding: 8px 12px;
+      border-bottom: 1px solid #E5E7EB;
     }
-    .info-table tr:last-child td { 
-      border-bottom: none; 
+    .info-table tr:last-child td {
+      border-bottom: none;
     }
-    .button { 
-      display: inline-block; 
-      padding: 12px 24px; 
-      background-color: #10B981; 
-      color: white; 
-      text-decoration: none; 
+    .button {
+      display: inline-block;
+      padding: 12px 24px;
+      background-color: #10B981;
+      color: white;
+      text-decoration: none;
       border-radius: 5px;
     }
     @media (max-width: 600px) {
@@ -369,14 +380,14 @@ Este es un email automático, por favor no respondas a este mensaje.`.trim();
     <div class="header">
       <h1 style="margin: 0; font-size: 28px; font-weight: bold;">${subject}</h1>
     </div>
-    
+
     <div class="content">
       <p style="font-size: 18px; color: #1F2937;">
         Hola <strong>${data.customerName}</strong>,
       </p>
-      
+
       <p style="font-size: 16px; color: #4B5563;">
-        ¡Gracias por unirte a nuestro plan <strong>${data.planName}</strong>! 
+        ¡Gracias por unirte a nuestro plan <strong>${data.planName}</strong>!
         Tu pago de <strong>${data.currency} ${data.amount}</strong> ha sido procesado exitosamente.
       </p>
 
@@ -402,7 +413,7 @@ Este es un email automático, por favor no respondas a este mensaje.`.trim();
       <p style="font-size: 16px; color: #4B5563;">
         <strong>¿Qué sigue?</strong>
       </p>
-      
+
       <ul style="font-size: 14px; color: #6B7280; padding-left: 20px;">
         <li>Acceso inmediato a todas las funciones de tu plan</li>
         <li>Recibirás recordatorios antes de la renovación</li>
@@ -414,7 +425,7 @@ Este es un email automático, por favor no respondas a este mensaje.`.trim();
         <a href="https://tuapp.com/dashboard" class="button">🚀 Comenzar a Usar</a>
       </div>
     </div>
-    
+
     <div class="footer">
       <p>© 2024 Tu App. Todos los derechos reservados.</p>
     </div>
@@ -432,7 +443,7 @@ ${subject}
 
 Hola ${data.customerName},
 
-¡Gracias por unirte a nuestro plan ${data.planName}! 
+¡Gracias por unirte a nuestro plan ${data.planName}!
 Tu pago de ${data.currency} ${data.amount} ha sido procesado exitosamente.
 
 Detalles de tu suscripción:
@@ -456,15 +467,14 @@ Comienza a usar tu plan: https://tuapp.com/dashboard
      */
     private async sendWithRetry(emailData: any, retries = 3): Promise<any> {
         const headers = new HttpHeaders({
-            'Authorization': `Bearer ${environment.mailersend.apiKey}`,
             'Content-Type': 'application/json'
         });
 
         for (let i = 0; i < retries; i++) {
             try {
-                return await firstValueFrom(this.http.post(this.mailersendUrl, emailData, { headers }));
+                return await firstValueFrom(this.http.post(this.backendEmailUrl, emailData, { headers }));
             } catch (error) {
-                console.warn(`🔄 [EmailService] Reintento ${i + 1}/${retries} falló:`, error);
+                console.warn(`[EmailService] Reintento ${i + 1}/${retries} falló:`, error);
                 if (i === retries - 1) throw error;
                 await this.delay(1000 * (i + 1));
             }
