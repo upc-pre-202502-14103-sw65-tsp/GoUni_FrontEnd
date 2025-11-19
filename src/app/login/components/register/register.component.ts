@@ -45,6 +45,8 @@ export class RegisterComponent {
   profilePhotoUrl: string = '';
   licenseNumber: string = '';
   driverDescription: string = '';
+  passwordStrengthClass = '';
+  passwordStrengthText = '';
 
   constructor(
     private authService: AuthService,
@@ -124,5 +126,31 @@ export class RegisterComponent {
 
   navigateToLogin() {
     this.router.navigate(['/login']);
+  }
+
+  // ESTA ES LA FUNCIÓN QUE VALIDA LA FORTALEZA DE LA CONTRASEÑA
+  checkPasswordStrength() {
+    const pwd = this.password || '';
+    let score = 0;
+
+    if (pwd.length >= 8) score++;
+    if (/[A-Z]/.test(pwd)) score++;
+    if (/[a-z]/.test(pwd)) score++;
+    if (/\d/.test(pwd)) score++;
+    if (/[^A-Za-z0-9]/.test(pwd)) score++;
+
+    if (score <= 2) {
+      this.passwordStrengthClass = 'weak';
+      this.passwordStrengthText = 'Débil';
+    } else if (score === 3 || score === 4) {
+      this.passwordStrengthClass = 'medium';
+      this.passwordStrengthText = 'Media';
+    } else if (score === 5) {
+      this.passwordStrengthClass = 'strong';
+      this.passwordStrengthText = 'Fuerte';
+    } else {
+      this.passwordStrengthClass = '';
+      this.passwordStrengthText = '';
+    }
   }
 }

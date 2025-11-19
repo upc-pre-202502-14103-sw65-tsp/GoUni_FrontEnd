@@ -76,3 +76,29 @@ button[mat-raised-button] {
 .login-link {
   margin-top: 15px;
 }
+
+.password-strength-bar {
+  margin-top: 4px;
+  padding: 4px 12px;
+  border-radius: 6px;
+  font-weight: bold;
+  width: fit-content;
+}
+
+.password-strength-bar.weak {
+  background: #ffdddd;
+  color: #d32f2f;
+  border: 1px solid #d32f2f;
+}
+
+.password-strength-bar.medium {
+  background: #fff4e5;
+  color: #f9a825;
+  border: 1px solid #f9a825;
+}
+
+.password-strength-bar.strong {
+  background: #e6ffed;
+  color: #388e3c;
+  border: 1px solid #388e3c;
+}
