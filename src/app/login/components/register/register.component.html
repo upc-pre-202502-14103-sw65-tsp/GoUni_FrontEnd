@@ -15,6 +15,7 @@
 
     <!-- Formulario de registro -->
     <form (ngSubmit)="onSubmit()" #registerForm="ngForm">
+
       <!-- Selección de rol -->
       <div class="role-group">
         <mat-radio-group [(ngModel)]="role" name="role" required>
@@ -23,75 +24,122 @@
         </mat-radio-group>
       </div>
 
-      <!-- Campo para el correo -->
+      <!-- Correo -->
       <mat-form-field appearance="fill" class="full-width">
         <mat-label>Correo</mat-label>
-        <input matInput type="email" [(ngModel)]="email" name="email" placeholder="Ingresa tu correo" autocomplete="off" required />
+        <input matInput type="email" [(ngModel)]="email" name="email" required autocomplete="off"/>
       </mat-form-field>
 
-      <!-- Campo para el nombre -->
+      <!-- Nombre -->
       <mat-form-field appearance="fill" class="full-width">
         <mat-label>Nombre</mat-label>
-        <input matInput type="text" [(ngModel)]="firstName" name="firstName" placeholder="Ingresa tu nombre" autocomplete="off" required />
+        <input matInput type="text" [(ngModel)]="firstName" name="firstName" required autocomplete="off"/>
       </mat-form-field>
 
-      <!-- Campo para el apellido -->
+      <!-- Apellido -->
       <mat-form-field appearance="fill" class="full-width">
         <mat-label>Apellido</mat-label>
-        <input matInput type="text" [(ngModel)]="lastName" name="lastName" placeholder="Ingresa tu apellido" autocomplete="off" required />
+        <input matInput type="text" [(ngModel)]="lastName" name="lastName" required autocomplete="off"/>
       </mat-form-field>
 
-      <!-- Campo para el teléfono -->
+      <!-- Teléfono -->
       <mat-form-field appearance="fill" class="full-width">
         <mat-label>Teléfono</mat-label>
-        <input matInput type="tel" [(ngModel)]="phoneNumber" name="phoneNumber" placeholder="Ingresa tu teléfono" autocomplete="off" required />
+        <input matInput type="tel" [(ngModel)]="phoneNumber" name="phoneNumber" required autocomplete="off"/>
       </mat-form-field>
 
-      <!-- Campo para el DNI -->
+      <!-- DNI -->
       <mat-form-field appearance="fill" class="full-width">
-        <mat-label>DNI</mat-label>
-        <input matInput type="text" [(ngModel)]="dniNumber" name="dniNumber" placeholder="Ingresa tu DNI (8 dígitos)" autocomplete="off" required pattern="[0-9]{8}" maxlength="8" />
+        <mat-label>DNI (8 dígitos)</mat-label>
+        <input matInput type="text" [(ngModel)]="dniNumber" name="dniNumber" required pattern="[0-9]{8}" maxlength="8" autocomplete="off"/>
       </mat-form-field>
 
-      <!-- Campo para la contraseña -->
+      <!-- Contraseña -->
       <mat-form-field appearance="fill" class="full-width">
         <mat-label>Contraseña</mat-label>
-        <input matInput [type]="showPassword ? 'text' : 'password'" [(ngModel)]="password" name="password" placeholder="Ingresa una contraseña" autocomplete="off" required />
-        <button mat-icon-button matSuffix (click)="togglePasswordVisibility()" type="button">
+        <input 
+          matInput
+          [type]="showPassword ? 'text' : 'password'"
+          [(ngModel)]="password"
+          name="password"
+          required 
+          autocomplete="off"
+          (ngModelChange)="checkPasswordStrength()"
+        />
+
+        <button mat-icon-button matSuffix type="button" (click)="togglePasswordVisibility()">
           <mat-icon>{{ showPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
         </button>
       </mat-form-field>
 
-      <!-- Campo para la foto de perfil -->
+      <!-- Barra de fuerza -->
+      <div class="password-strength-container" *ngIf="password">
+        <div class="progress-wrapper">
+          <div 
+            class="progress-bar" 
+            [style.width.%]="passwordStrengthPercentage"
+            [ngClass]="passwordStrengthClass">
+          </div>
+        </div>
+        <span class="strength-label" [ngClass]="passwordStrengthClass">
+          {{ passwordStrengthText }}
+        </span>
+      </div>
+
+      <!-- Checklist -->
+      <ul class="password-checklist">
+        <li *ngFor="let req of passwordRequirements">
+          <mat-icon 
+            class="check-icon"
+            [ngClass]="{
+              'default': !req.checked,
+              'fail': req.checked && !req.met,
+              'success': req.met
+            }">
+            {{ req.met ? 'check_circle' : (req.checked ? 'cancel' : 'radio_button_unchecked') }}
+          </mat-icon>
+
+          <span 
+            [ngClass]="{
+              'default-text': !req.checked,
+              'fail-text': req.checked && !req.met,
+              'success-text': req.met
+            }">
+            {{ req.text }}
+          </span>
+        </li>
+      </ul>
+
+      <!-- Foto -->
       <mat-form-field appearance="fill" class="full-width">
         <mat-label>Foto de perfil (URL)</mat-label>
-        <input matInput type="text" [(ngModel)]="profilePhotoUrl" name="profilePhotoUrl" placeholder="URL de la foto" autocomplete="off" />
+        <input matInput type="text" [(ngModel)]="profilePhotoUrl" name="profilePhotoUrl" autocomplete="off"/>
       </mat-form-field>
 
-      <!-- Campos solo para conductor -->
+      <!-- Campos conductor -->
       @if (role === 'DRIVER_ROLE') {
         <mat-form-field appearance="fill" class="full-width">
-          <mat-label>Número de licencia</mat-label>
-          <input matInput type="text" [(ngModel)]="licenseNumber" name="licenseNumber" placeholder="Licencia" autocomplete="off" required />
+          <mat-label>Licencia</mat-label>
+          <input matInput type="text" [(ngModel)]="licenseNumber" name="licenseNumber" required autocomplete="off"/>
         </mat-form-field>
+
         <mat-form-field appearance="fill" class="full-width">
           <mat-label>Descripción del conductor</mat-label>
-          <input matInput type="text" [(ngModel)]="driverDescription" name="driverDescription" placeholder="Descripción" autocomplete="off" required />
+          <input matInput type="text" [(ngModel)]="driverDescription" name="driverDescription" required autocomplete="off"/>
         </mat-form-field>
       }
 
-      <!-- Aceptar términos y condiciones -->
+      <!-- Términos -->
       <mat-checkbox [(ngModel)]="termsAccepted" name="terms" required>
         Acepto los Términos y Condiciones
       </mat-checkbox>
 
-      <!-- Botón para enviar -->
+      <!-- Botón enviar -->
       <button mat-raised-button color="accent" type="submit" [disabled]="!registerForm.form.valid">
         Registrar
       </button>
     </form>
 
-    <!-- Botón para ir a login -->
     <div class="login-link">
       <button mat-button color="primary" (click)="navigateToLogin()">
         ¿Ya tienes cuenta? Inicia sesión
