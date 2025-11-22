@@ -111,3 +111,15 @@ mat-form-field.full-width {
 .password-checklist {
   margin-top: 4px;
 }
+
+.profile-photo-preview {
+  margin-bottom: 12px;
+  text-align: center;
+}
+.profile-photo-preview img {
+  max-width: 300px;
+  max-height: 300px;
+  border-radius: 2px;
+  border: 2px solid #eee;
+  object-fit: cover;
+}
