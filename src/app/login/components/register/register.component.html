@@ -117,6 +117,7 @@
       </mat-form-field>
 
       <div class="profile-photo-preview" *ngIf="profilePhotoUrl">
+        <span>Preview:</span> <br>
         <img [src]="profilePhotoUrl" alt="Previsualización foto de perfil" (error)="onPhotoError      ($event)" />
       </div>
 

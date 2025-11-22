@@ -117,8 +117,8 @@ mat-form-field.full-width {
   text-align: center;
 }
 .profile-photo-preview img {
-  max-width: 120px;
-  max-height: 120px;
+  max-width: 300px;
+  max-height: 300px;
   border-radius: 2px;
   border: 2px solid #eee;
   object-fit: cover;
