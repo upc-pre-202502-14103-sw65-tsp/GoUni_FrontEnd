@@ -116,6 +116,10 @@
         <input matInput type="text" [(ngModel)]="profilePhotoUrl" name="profilePhotoUrl" autocomplete="off"/>
       </mat-form-field>
 
+      <div class="profile-photo-preview" *ngIf="profilePhotoUrl">
+        <img [src]="profilePhotoUrl" alt="Previsualización foto de perfil" (error)="onPhotoError      ($event)" />
+      </div>
+
       <!-- Campos conductor -->
       @if (role === 'DRIVER_ROLE') {
         <mat-form-field appearance="fill" class="full-width">

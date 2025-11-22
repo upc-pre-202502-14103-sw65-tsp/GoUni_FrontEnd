@@ -178,4 +178,8 @@ export class RegisterComponent {
       this.passwordStrengthText = 'Fuerte';
     }
   }
+
+  onPhotoError(event: Event) {
+    (event.target as HTMLImageElement).src = 'assets/default-profile.png';
+  }
 }
