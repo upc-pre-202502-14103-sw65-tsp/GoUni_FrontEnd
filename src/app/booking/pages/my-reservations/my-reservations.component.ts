@@ -6,6 +6,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { ToolbarComponent } from '../../../home/components/toolbar/toolbar.component';
+import {RateDriverDialogComponent} from "../../components/rate-driver-dialog-data/rate-driver-dialog-data";
+import {MatDialog} from "@angular/material/dialog";
 
 @Component({
   selector: 'app-my-reservations',
@@ -27,11 +29,29 @@ export class MyReservationsComponent implements OnInit {
   constructor(
     private exportService: ExportReservationsService,
     private reservationService: ReservationService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
     this.loadReservations();
+  }
+
+  openRatingDialog(reservation: any): void {
+    const dialogRef = this.dialog.open(RateDriverDialogComponent, {
+      width: '500px',
+      data: {
+        rideId: reservation.rideId,
+        driverName: `${reservation.driver.firstName} ${reservation.driver.lastName}`
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        console.log('Rating submitted:', result);
+        // Actualizar la UI o recargar datos
+      }
+    });
   }
 
   loadReservations(): void {
