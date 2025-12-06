@@ -1,0 +1,165 @@
+.rating-display {
+  width: 100%;
+}
+
+.loading-container,
+.error-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.error-container mat-icon {
+  font-size: 48px;
+  width: 48px;
+  height: 48px;
+  color: #f44336;
+  margin-bottom: 10px;
+}
+
+/* Compact View */
+.compact-view .rating-summary {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.compact-view .star-icon {
+  color: #ffc107;
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+}
+
+.compact-view .average {
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+}
+
+.compact-view .count {
+  font-size: 14px;
+  color: #666;
+}
+
+/* Full View */
+.full-view h3 {
+  margin: 0 0 20px 0;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.stats-summary {
+  background: #f5f5f5;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 24px;
+}
+
+.average-section {
+  text-align: center;
+}
+
+.average-number {
+  font-size: 48px;
+  font-weight: 700;
+  color: #333;
+  line-height: 1;
+}
+
+.stars-display {
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+  margin: 10px 0;
+}
+
+.stars-display mat-icon {
+  font-size: 24px;
+  width: 24px;
+  height: 24px;
+  color: #ddd;
+}
+
+.stars-display mat-icon.filled {
+  color: #ffc107;
+}
+
+.total-ratings {
+  font-size: 14px;
+  color: #666;
+  margin-top: 8px;
+}
+
+.recent-ratings {
+  margin-top: 24px;
+}
+
+.recent-ratings h4 {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+
+.rating-card {
+  margin-bottom: 12px;
+  padding: 16px;
+}
+
+.rating-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.stars-small {
+  display: flex;
+  gap: 2px;
+}
+
+.small-star {
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
+  color: #ddd;
+}
+
+.small-star.filled {
+  color: #ffc107;
+}
+
+.rating-date {
+  font-size: 12px;
+  color: #999;
+}
+
+.rating-comment {
+  margin: 8px 0;
+  color: #666;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.rating-author {
+  font-size: 13px;
+  color: #999;
+  font-style: italic;
+  margin: 8px 0 0 0;
+}
+
+.no-ratings {
+  text-align: center;
+  padding: 40px 20px;
+  color: #999;
+}
+
+.no-ratings mat-icon {
+  font-size: 64px;
+  width: 64px;
+  height: 64px;
+  margin-bottom: 16px;
+  opacity: 0.5;
+}

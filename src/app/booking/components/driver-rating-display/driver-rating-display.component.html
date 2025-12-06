@@ -1,0 +1,66 @@
+<div class="rating-display" [class.compact]="compact">
+  <div *ngIf="isLoading" class="loading-container">
+    <mat-spinner diameter="40"></mat-spinner>
+  </div>
+
+  <div *ngIf="error && !isLoading" class="error-container">
+    <mat-icon>error_outline</mat-icon>
+    <p>{{ error }}</p>
+  </div>
+
+  <div *ngIf="driverStats && !isLoading && !error">
+    <!-- Compact View -->
+    <div *ngIf="compact" class="compact-view">
+      <div class="rating-summary">
+        <mat-icon class="star-icon">star</mat-icon>
+        <span class="average">{{ driverStats.averageRating.toFixed(1) }}</span>
+        <span class="count">({{ driverStats.totalRatings }})</span>
+      </div>
+    </div>
+
+    <!-- Full View -->
+    <div *ngIf="!compact" class="full-view">
+      <h3>Calificaciones</h3>
+
+      <div class="stats-summary">
+        <div class="average-section">
+          <div class="average-number">{{ driverStats.averageRating.toFixed(1) }}</div>
+          <div class="stars-display">
+            <mat-icon
+              *ngFor="let filled of getStarArray(driverStats.averageRating)"
+              [class.filled]="filled"
+            >
+              {{ filled ? 'star' : 'star_border' }}
+            </mat-icon>
+          </div>
+          <div class="total-ratings">{{ driverStats.totalRatings }} calificaciones</div>
+        </div>
+      </div>
+
+      <div *ngIf="driverStats.recentRatings.length > 0" class="recent-ratings">
+        <h4>Calificaciones recientes</h4>
+        <mat-card *ngFor="let rating of driverStats.recentRatings" class="rating-card">
+          <div class="rating-header">
+            <div class="stars-small">
+              <mat-icon
+                *ngFor="let filled of getStarArray(rating.score)"
+                [class.filled]="filled"
+                class="small-star"
+              >
+                {{ filled ? 'star' : 'star_border' }}
+              </mat-icon>
+            </div>
+            <span class="rating-date">{{ formatDate(rating.createdAt) }}</span>
+          </div>
+          <p *ngIf="rating.comment" class="rating-comment">{{ rating.comment }}</p>
+          <p class="rating-author">- {{ rating.passengerName }}</p>
+        </mat-card>
+      </div>
+
+      <div *ngIf="driverStats.totalRatings === 0" class="no-ratings">
+        <mat-icon>stars</mat-icon>
+        <p>Aún no hay calificaciones para este conductor</p>
+      </div>
+    </div>
+  </div>
+</div>
