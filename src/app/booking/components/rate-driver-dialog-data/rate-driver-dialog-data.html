@@ -1,0 +1,47 @@
+<h2 mat-dialog-title>Calificar conductor</h2>
+<mat-dialog-content>
+  <p class="driver-name">{{ data.driverName }}</p>
+
+  <div class="rating-container">
+    <p class="rating-label">¿Cómo fue tu experiencia?</p>
+    <div class="stars">
+      <mat-icon
+        *ngFor="let star of stars"
+        class="star"
+        [class.filled]="star <= (hoveredRating || rating)"
+        (click)="setRating(star)"
+        (mouseenter)="setHoveredRating(star)"
+        (mouseleave)="clearHoveredRating()"
+      >
+        {{ star <= (hoveredRating || rating) ? 'star' : 'star_border' }}
+      </mat-icon>
+    </div>
+  </div>
+
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Comentario (opcional)</mat-label>
+    <textarea
+      matInput
+      [(ngModel)]="comment"
+      placeholder="Cuéntanos sobre tu experiencia..."
+      rows="4"
+      maxlength="500"
+      [disabled]="isSubmitting"
+    ></textarea>
+    <mat-hint align="end">{{ comment.length }}/500</mat-hint>
+  </mat-form-field>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()" [disabled]="isSubmitting">
+    Cancelar
+  </button>
+  <button
+    mat-raised-button
+    color="primary"
+    (click)="onSubmit()"
+    [disabled]="rating === 0 || isSubmitting"
+  >
+    {{ isSubmitting ? 'Enviando...' : 'Enviar calificación' }}
+  </button>
+</mat-dialog-actions>
