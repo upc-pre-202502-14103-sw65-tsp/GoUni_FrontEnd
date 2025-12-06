@@ -16,3 +16,29 @@ export interface Driver {
   discount?: string;
   discountCode?: string;
 }
+
+export interface CreateRatingRequest {
+  rideId: string;
+  score: number;
+  comment: string;
+}
+
+export interface Rating {
+  id: string;
+  rideId: string;
+  driverId: string;
+  driverName: string;
+  passengerId: string;
+  passengerName: string;
+  score: number;
+  comment: string;
+  createdAt: string;
+}
+
+export interface DriverRatingStats {
+  driverId: string;
+  driverName: string;
+  averageRating: number;
+  totalRatings: number;
+  recentRatings: Rating[];
+}
