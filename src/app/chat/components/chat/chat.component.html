@@ -1,34 +1,85 @@
 <app-toolbar></app-toolbar>
-<div class="chat_window">
-  <div class="top_menu">
-    <div class="buttons">
-      <div class="button close"></div>
-      <div class="button minimize"></div>
-      <div class="button maximize"></div>
-    </div>
-    <div class="title">
-      <img src="comunidad-ambiental.png" width="25px" height="25px" alt="">
-      Chat-Virtual
-    </div>
-  </div>
-  <ul class="messages">
-    <li class="message right" *ngFor="let item of messageList"
-        [ngClass]="{'left': item.message_side === 'receiver', 'right': item.message_side === 'sender'}"
-    >
-      <div class="avatar"></div>
-      <div class="text_wrapper">
-        <div class="text">{{item.message}}</div>
+<mat-card class="chat-container">
+  <mat-card-header class="chat-header">
+    <mat-card-title>
+      <div class="header-content">
+        <div class="user-info">
+          <mat-icon>person</mat-icon>
+          <span>{{ otherUserName }}</span>
+        </div>
+        <div class="connection-status" [class.connected]="isConnected">
+          <mat-icon>{{ isConnected ? 'wifi' : 'wifi_off' }}</mat-icon>
+          <span>{{ isConnected ? 'Conectado' : 'Desconectado' }}</span>
+        </div>
       </div>
-    </li>
-  </ul>
-  <div class="bottom_wrapper clearfix">
-    <div class="message_input_wrapper">
-      <input class="message_input" placeholder="Message..." [(ngModel)]="messageInput"
-             (keyup.enter)="sendMessage()"/>
+    </mat-card-title>
+  </mat-card-header>
+
+  <mat-card-content class="chat-content">
+    <div *ngIf="isLoading" class="loading-container">
+      <mat-spinner diameter="40"></mat-spinner>
+      <p>Cargando mensajes...</p>
     </div>
-    <div class="send_message" (click)="sendMessage()">
-      <div class="icon"></div>
-      <div class="text">Send</div>
+
+    <div #messagesContainer class="messages-container" *ngIf="!isLoading">
+      <div *ngIf="messages.length === 0" class="no-messages">
+        <mat-icon>chat_bubble_outline</mat-icon>
+        <p>No hay mensajes aún</p>
+        <p class="subtitle">Inicia la conversación</p>
+      </div>
+
+      <div
+        *ngFor="let message of messages"
+        class="message"
+        [class.my-message]="isMyMessage(message)"
+        [class.other-message]="!isMyMessage(message)"
+      >
+        <div class="message-content">
+          <div class="message-bubble">
+            <p>{{ message.content }}</p>
+            <div class="message-footer">
+              <span class="message-time">{{ formatTime(message.timestamp) }}</span>
+              <mat-icon
+                *ngIf="isMyMessage(message)"
+                class="status-icon"
+                [class]="getMessageStatusClass(message.status)"
+              >
+                {{ getMessageStatusIcon(message.status) }}
+              </mat-icon>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="otherUserTyping" class="typing-indicator">
+        <div class="typing-dots">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+        <span class="typing-text">{{ otherUserName }} está escribiendo...</span>
+      </div>
     </div>
-  </div>
-</div>
+  </mat-card-content>
+
+  <mat-card-actions class="chat-input">
+    <mat-form-field appearance="outline" class="message-input">
+      <input
+        matInput
+        [(ngModel)]="newMessage"
+        (keyup)="onTyping()"
+        (keyup.enter)="sendMessage()"
+        placeholder="Escribe un mensaje..."
+        [disabled]="!isConnected"
+      />
+    </mat-form-field>
+    <button
+      mat-fab
+      color="primary"
+      (click)="sendMessage()"
+      [disabled]="!newMessage.trim() || !isConnected"
+    >
+      <mat-icon>send</mat-icon>
+    </button>
+  </mat-card-actions>
+</mat-card>
